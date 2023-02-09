@@ -1,0 +1,5 @@
+break *0x80000000
+break /home/zzp/keystone/elasticlave/riscv-pk/sm/enclave.c:551
+break run_enclave
+break context_switch_to_enclave
+break mtrap.c:262

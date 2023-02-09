@@ -23,7 +23,9 @@ static size_t record_size;
 static pid_t pid;
 
 static void* slave_run(void* _d){
+  printf("[ZZP-SDK]Slave running...\n\n");
 	enclaves[1]->run();
+  printf("[ZZP-SDK]Slave exited.\n\n");
 }
 
 static int get_record_size_handler(Keystone* encalve, void* buffer, struct shared_region* shared_region){
@@ -61,6 +63,7 @@ int main(int argc, char* argv[])
   if(argc < 2)
 	  return -1;
   record_size = atol(argv[1]);
+  unsigned long cycles1,cycles2,cycles3,cycles4;
 
   int self_timing = 0;
   int load_only = 0;
@@ -74,8 +77,10 @@ int main(int argc, char* argv[])
 
   params.setFreeMemSize(freemem_size);
   params.setUntrustedMem(utm_ptr, untrusted_size);
+  asm volatile ("rdcycle %0" : "=r" (cycles1));
 
   enclave1.init("icall-server-s.eapp_riscv", "eyrie-rt", params); // two identical enclaves
+  asm volatile ("rdcycle %0" : "=r" (cycles2));
 
   enclave2.init("icall-server-c.eapp_riscv", "eyrie-rt", params);
 
@@ -97,10 +102,25 @@ int main(int argc, char* argv[])
   enclaves[1] = &enclave2;
   enclave_n = 2;
 
+
+
+
+  printf("\n\n\n\n\n\n\n\t\thalf way test: %lu, %lu ..\n\n",cycles1, cycles2 - cycles1);
+  fflush(stdout);
+
+
   pthread_t slave_thread;
   pthread_create(&slave_thread, 0, slave_run, NULL);
+  asm volatile ("rdcycle %0" : "=r" (cycles3));
   
   enclaves[0]->run();
+  asm volatile ("rdcycle %0" : "=r" (cycles4));
+
+  printf("[ZZP-SDK]Client running...\n\n");
+  
+  printf("\n\n\n\n[ PERFORMANCE EVLUATION!!! ]\n\n\n%lu, %lu, %lu, %lu\n %lu\n", 
+                cycles1, cycles2 - cycles1, cycles3 - cycles2, cycles4 - cycles3, cycles4);
+  fflush(stdout);
 
   pthread_join(slave_thread, NULL);
 

@@ -79,6 +79,7 @@ static int keystone_sm_print_rt_stats(unsigned long arg){
 
 static int keystone_finalize_enclave(unsigned long arg)
 {
+  // pr_err("in finalize\n");
   int ret;
   struct enclave *enclave;
   struct utm *utm;
@@ -96,7 +97,10 @@ static int keystone_finalize_enclave(unsigned long arg)
 
   /* SBI Call */
   create_args.epm_region.paddr = enclave->epm->pa;
+  // if(enclave->epm->pa == 0xc1a00000)
+    // create_args.epm_region.paddr = 0xc181b000;
   create_args.epm_region.size = enclave->epm->size;
+
 
   utm = enclave->utm;
 
@@ -120,12 +124,18 @@ static int keystone_finalize_enclave(unsigned long arg)
   // SM will write the eid to struct enclave.eid
   create_args.eid_pptr = (unsigned int *) __pa(&enclave->eid);
 
+// if (create_args.epm_region.paddr == 0xc181b000)
+  // pr_err("\n%d, %llx\n", __LINE__, create_args.epm_region.paddr);
+  
 
   // set up the PMP regions for utm and epm
   // computing the measurement
+  // pr_err("[%s]:%s:%d, epm %llx", __FILE__, __func__, __LINE__, create_args.epm_region.paddr);
+  
   ret = SBI_CALL_1(SBI_SM_CREATE_ENCLAVE, __pa(&create_args));
+  
   if (ret) {
-    keystone_err("keystone_create_enclave: SBI call failed\n");
+    keystone_err("[%s]:keystone_create_enclave: SBI call failed\n", __FILE__);
     goto error_destroy_enclave;
   }
 
@@ -218,13 +228,18 @@ static int keystone_run_enclave(unsigned long arg)
 
   ueid = run->eid;
   enclave = get_enclave_by_id(ueid);
-
+// pr_err("``` ioctl RUN ``` go to sbicall:%llx root pt:%llx",enclave->epm->pa, enclave->epm->root_page_table);
   if(!enclave) {
     keystone_err("invalid enclave id\n");
     return -EINVAL;
   }
 
   ret = SBI_CALL_2(SBI_SM_RUN_ENCLAVE, enclave->eid, __pa((uintptr_t)request_args));
+
+  /*
+  #define SBI_CALL_1(___which, ___arg0) SBI_CALL(___which, ___arg0, 0, 0, 0, 0)
+  #define SBI_CALL_2(___which, ___arg0, ___arg1) SBI_CALL(___which, ___arg0, ___arg1, 0, 0, 0)
+  */
 
   uintptr_t resp0 = 0, resp1 = 0;
   while(process_sm_request(enclave, &ret, request_args, &resp0, &resp1, dr_request_args))

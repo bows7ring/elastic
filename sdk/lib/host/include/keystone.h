@@ -185,12 +185,50 @@ public:
 class EnclaveGroup {
 	private:
 		Keystone* enclaves[ENCLAVE_GROUP_MAX];
-		int enclave_n;
+		int enclave_n = 0;
+    Memory* pGroupMemory;
+
+
 	public:
 		EnclaveGroup() : enclave_n(0) {}
 		void addEnclave(Keystone* enclave){
 			enclaves[enclave_n ++] = enclave;
 		}
+    // Final shape.
+    /*
+    Alloc one region, named GroupRegion, which contains all the enclaves' epm regions.
+    The epm regions should be continous. So that we can lock the whole GroupRegion, without shutting down
+    
+    */
+// Fuck! Here is U-mode!
+// 1, copy to M-mode??
+// 2, something like region in M-mode.
+
+
+// alloc a big region for all enclave.
+// enclaves are invalid.
+    bool initEnclaveGroup() {
+      pGroupMemory->init(0,0);
+      pGroupMemory->AllocMem((enclave_n + 1) * PAGE_SIZE * 14000);
+
+    }
+
+
+// assign each enclave an entry.
+// enclaves should be ready to run
+    bool prepareEnclaveGroup(int enclave_n) {
+
+      // for (int i = 0; i < enclave_n; i++) {
+          // ioctl        
+      // }
+    }
+
+    // used for bad call
+    void DestroyGroup() {
+      for (int i = 0; i < enclave_n; i++) {
+        enclaves[i]->destroy();
+      }
+    }
 		keystone_status_t run();
 };
 

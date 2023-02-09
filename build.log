@@ -1,0 +1,614 @@
+CMake Error: The current CMakeCache.txt directory /keystone/CMakeCache.txt is different than the directory /home/zzp/keystone/elasticlave where CMakeCache.txt was created. This may result in binaries being created in the wrong place. If you are not sure, reedit the CMakeCache.txt
+/usr/bin/cmake -H/keystone -B/keystone/build --check-build-system CMakeFiles/Makefile.cmake 0
+make -f CMakeFiles/Makefile2 image
+make[1]: Entering directory '/keystone/build'
+/usr/bin/cmake -H/keystone -B/keystone/build --check-build-system CMakeFiles/Makefile.cmake 0
+/usr/bin/cmake -E cmake_progress_start /keystone/build/CMakeFiles 11
+make -f CMakeFiles/Makefile2 CMakeFiles/image.dir/all
+make[2]: Entering directory '/keystone/build'
+make -f CMakeFiles/linux64.patch.dir/build.make CMakeFiles/linux64.patch.dir/depend
+make[3]: Entering directory '/keystone/build'
+cd /keystone/build && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /keystone /keystone /keystone/build /keystone/build /keystone/build/CMakeFiles/linux64.patch.dir/DependInfo.cmake --color=
+make[3]: Leaving directory '/keystone/build'
+make -f CMakeFiles/linux64.patch.dir/build.make CMakeFiles/linux64.patch.dir/build
+make[3]: Entering directory '/keystone/build'
+[  9%] [34m[1mApplying linux64.patch[0m
+cd /keystone/linux && patch --forward -p0 < /keystone/patches/linux/linux64.patch || true
+patching file arch/riscv/mm/init.c
+Reversed (or previously applied) patch detected!  Skipping patch.
+2 out of 2 hunks ignored -- saving rejects to file arch/riscv/mm/init.c.rej
+make[3]: Leaving directory '/keystone/build'
+[  9%] Built target linux64.patch
+make -f CMakeFiles/linux.dir/build.make CMakeFiles/linux.dir/depend
+make[3]: Entering directory '/keystone/build'
+cd /keystone/build && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /keystone /keystone /keystone/build /keystone/build /keystone/build/CMakeFiles/linux.dir/DependInfo.cmake --color=
+make[3]: Leaving directory '/keystone/build'
+make -f CMakeFiles/linux.dir/build.make CMakeFiles/linux.dir/build
+make[3]: Entering directory '/keystone/build'
+[ 18%] [34m[1mBuilding linux[0m
+make -C /keystone/linux O=/keystone/build/linux.build CROSS_COMPILE=riscv64-unknown-linux-gnu- ARCH=riscv vmlinux
+make[4]: Entering directory '/keystone/linux'
+make[5]: Entering directory '/keystone/build/linux.build'
+  Using /keystone/linux as source for kernel
+  GEN     Makefile
+  CALL    /keystone/linux/scripts/checksyscalls.sh
+  CALL    /keystone/linux/scripts/atomic/check-atomics.sh
+  CHK     include/generated/compile.h
+  UPD     include/generated/compile.h
+  CC      init/version.o
+  AR      init/built-in.a
+  GEN     .version
+  CHK     include/generated/compile.h
+  UPD     include/generated/compile.h
+  CC      init/version.o
+  AR      init/built-in.a
+  LD      vmlinux.o
+  MODPOST vmlinux.o
+  MODINFO modules.builtin.modinfo
+  KSYM    .tmp_kallsyms1.o
+  KSYM    .tmp_kallsyms2.o
+  LD      vmlinux
+  SYSMAP  System.map
+make[5]: Leaving directory '/keystone/build/linux.build'
+make[4]: Leaving directory '/keystone/linux'
+riscv64-unknown-linux-gnu-strip -o /keystone/build/linux.build/vmlinux-stripped /keystone/build/linux.build/vmlinux
+make[3]: Leaving directory '/keystone/build'
+[ 27%] Built target linux
+make -f CMakeFiles/sm.dir/build.make CMakeFiles/sm.dir/depend
+make[3]: Entering directory '/keystone/build'
+cd /keystone/build && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /keystone /keystone /keystone/build /keystone/build /keystone/build/CMakeFiles/sm.dir/DependInfo.cmake --color=
+make[3]: Leaving directory '/keystone/build'
+make -f CMakeFiles/sm.dir/build.make CMakeFiles/sm.dir/build
+make[3]: Entering directory '/keystone/build'
+[ 36%] [34m[1mBuilding sm[0m
+cd /keystone/build/riscv-pk.build && ln -rsnf /keystone/riscv-pk/sm_c /keystone/riscv-pk/sm
+cd /keystone/build/riscv-pk.build && /keystone/riscv-pk/configure --host=riscv64-unknown-linux-gnu --with-payload=/keystone/build/linux.build/vmlinux-stripped --enable-logo --with-logo=/keystone/conf/sifive_logo.txt --enable-sm --with-target-platform=default
+checking build system type... x86_64-pc-linux-gnu
+checking host system type... riscv64-unknown-linux-gnu
+checking for riscv64-unknown-linux-gnu-gcc... riscv64-unknown-linux-gnu-gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... yes
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether riscv64-unknown-linux-gnu-gcc accepts -g... yes
+checking for riscv64-unknown-linux-gnu-gcc option to accept ISO C89... none needed
+checking for riscv64-unknown-linux-gnu-g++... riscv64-unknown-linux-gnu-g++
+checking whether we are using the GNU C++ compiler... yes
+checking whether riscv64-unknown-linux-gnu-g++ accepts -g... yes
+checking for riscv64-unknown-linux-gnu-ar... riscv64-unknown-linux-gnu-ar
+checking for riscv64-unknown-linux-gnu-ranlib... riscv64-unknown-linux-gnu-ranlib
+checking for riscv64-unknown-linux-gnu-readelf... riscv64-unknown-linux-gnu-readelf
+checking for riscv64-unknown-linux-gnu-objcopy... riscv64-unknown-linux-gnu-objcopy
+checking for a BSD-compatible install... /usr/bin/install -c
+checking how to run the C preprocessor... riscv64-unknown-linux-gnu-gcc -E
+checking for grep that handles long lines and -e... /bin/grep
+checking for egrep... /bin/grep -E
+checking for ANSI C header files... yes
+Building without optimizations
+configure: configuring default subproject : pk
+configure: configuring default subproject : bbl
+configure: configuring optional subproject : sm
+configure: processing optional subproject : sm_rs
+configure: configuring default subproject : dummy_payload
+configure: configuring default subproject : machine
+configure: configuring default subproject : util
+configure: creating ./config.status
+config.status: creating pk.mk
+config.status: creating bbl.mk
+config.status: creating sm.mk
+config.status: creating dummy_payload.mk
+config.status: creating machine.mk
+config.status: creating util.mk
+config.status: creating Makefile
+config.status: creating config.h
+config.status: config.h is unchanged
+cd /keystone/build/riscv-pk.build && env CFLAGS='-g -mabi=lp64d -march=rv64imafdc' make -C /keystone/build/riscv-pk.build
+make[4]: Entering directory '/keystone/build/riscv-pk.build'
+if riscv64-unknown-linux-gnu-readelf -h /keystone/build/linux.build/vmlinux-stripped 2> /dev/null > /dev/null; then riscv64-unknown-linux-gnu-objcopy -O binary /keystone/build/linux.build/vmlinux-stripped bbl_payload; else cp /keystone/build/linux.build/vmlinux-stripped bbl_payload; fi
+riscv64-unknown-linux-gnu-gcc -MMD -MP -Wall -Werror -D__NO_INLINE__ -mcmodel=medany -std=gnu99 -Wno-unused -Wno-attributes -fno-delete-null-pointer-checks -fno-strict-aliasing -O0 -g -mabi=lp64d -march=rv64imafdc -g -DPLUGIN_ENABLE_MULTIMEM -DBBL_PAYLOAD=\"bbl_payload\" -DBBL_LOGO_FILE=\"bbl_logo_file\" -DTARGET_PLATFORM_HEADER=\"platform/default/default.h\" -I. -I/keystone/riscv-pk/pk -I/keystone/riscv-pk/bbl -I/keystone/riscv-pk/sm -I/keystone/riscv-pk/dummy_payload -I/keystone/riscv-pk/machine -I/keystone/riscv-pk/util -c /keystone/riscv-pk/bbl/payload.S
+riscv64-unknown-linux-gnu-ar rcv libbbl_Clib.a logo.o payload.o raw_logo.o
+r - logo.o
+r - payload.o
+r - raw_logo.o
+riscv64-unknown-linux-gnu-ranlib libbbl_Clib.a
+riscv64-unknown-linux-gnu-ar rcvT libbbl.a libbbl_Clib.a libbbl_Rlib.a
+a - logo.o
+a - payload.o
+a - raw_logo.o
+riscv64-unknown-linux-gnu-ranlib libbbl.a
+riscv64-unknown-linux-gnu-gcc -MMD -MP -Wall -Werror -D__NO_INLINE__ -mcmodel=medany -std=gnu99 -Wno-unused -Wno-attributes -fno-delete-null-pointer-checks -fno-strict-aliasing -O0 -g -mabi=lp64d -march=rv64imafdc -g -DPLUGIN_ENABLE_MULTIMEM -DBBL_PAYLOAD=\"bbl_payload\" -DBBL_LOGO_FILE=\"bbl_logo_file\" -DTARGET_PLATFORM_HEADER=\"platform/default/default.h\" -I. -I/keystone/riscv-pk/pk -I/keystone/riscv-pk/bbl -I/keystone/riscv-pk/sm -I/keystone/riscv-pk/dummy_payload -I/keystone/riscv-pk/machine -I/keystone/riscv-pk/util -c /keystone/riscv-pk/sm/sha3/sha3.c
+riscv64-unknown-linux-gnu-gcc -MMD -MP -Wall -Werror -D__NO_INLINE__ -mcmodel=medany -std=gnu99 -Wno-unused -Wno-attributes -fno-delete-null-pointer-checks -fno-strict-aliasing -O0 -g -mabi=lp64d -march=rv64imafdc -g -DPLUGIN_ENABLE_MULTIMEM -DBBL_PAYLOAD=\"bbl_payload\" -DBBL_LOGO_FILE=\"bbl_logo_file\" -DTARGET_PLATFORM_HEADER=\"platform/default/default.h\" -I. -I/keystone/riscv-pk/pk -I/keystone/riscv-pk/bbl -I/keystone/riscv-pk/sm -I/keystone/riscv-pk/dummy_payload -I/keystone/riscv-pk/machine -I/keystone/riscv-pk/util -c /keystone/riscv-pk/sm/ed25519/keypair.c
+riscv64-unknown-linux-gnu-gcc -MMD -MP -Wall -Werror -D__NO_INLINE__ -mcmodel=medany -std=gnu99 -Wno-unused -Wno-attributes -fno-delete-null-pointer-checks -fno-strict-aliasing -O0 -g -mabi=lp64d -march=rv64imafdc -g -DPLUGIN_ENABLE_MULTIMEM -DBBL_PAYLOAD=\"bbl_payload\" -DBBL_LOGO_FILE=\"bbl_logo_file\" -DTARGET_PLATFORM_HEADER=\"platform/default/default.h\" -I. -I/keystone/riscv-pk/pk -I/keystone/riscv-pk/bbl -I/keystone/riscv-pk/sm -I/keystone/riscv-pk/dummy_payload -I/keystone/riscv-pk/machine -I/keystone/riscv-pk/util -c /keystone/riscv-pk/sm/ed25519/sign.c
+riscv64-unknown-linux-gnu-gcc -MMD -MP -Wall -Werror -D__NO_INLINE__ -mcmodel=medany -std=gnu99 -Wno-unused -Wno-attributes -fno-delete-null-pointer-checks -fno-strict-aliasing -O0 -g -mabi=lp64d -march=rv64imafdc -g -DPLUGIN_ENABLE_MULTIMEM -DBBL_PAYLOAD=\"bbl_payload\" -DBBL_LOGO_FILE=\"bbl_logo_file\" -DTARGET_PLATFORM_HEADER=\"platform/default/default.h\" -I. -I/keystone/riscv-pk/pk -I/keystone/riscv-pk/bbl -I/keystone/riscv-pk/sm -I/keystone/riscv-pk/dummy_payload -I/keystone/riscv-pk/machine -I/keystone/riscv-pk/util -c /keystone/riscv-pk/sm/ed25519/fe.c
+riscv64-unknown-linux-gnu-gcc -MMD -MP -Wall -Werror -D__NO_INLINE__ -mcmodel=medany -std=gnu99 -Wno-unused -Wno-attributes -fno-delete-null-pointer-checks -fno-strict-aliasing -O0 -g -mabi=lp64d -march=rv64imafdc -g -DPLUGIN_ENABLE_MULTIMEM -DBBL_PAYLOAD=\"bbl_payload\" -DBBL_LOGO_FILE=\"bbl_logo_file\" -DTARGET_PLATFORM_HEADER=\"platform/default/default.h\" -I. -I/keystone/riscv-pk/pk -I/keystone/riscv-pk/bbl -I/keystone/riscv-pk/sm -I/keystone/riscv-pk/dummy_payload -I/keystone/riscv-pk/machine -I/keystone/riscv-pk/util -c /keystone/riscv-pk/sm/ed25519/ge.c
+riscv64-unknown-linux-gnu-gcc -MMD -MP -Wall -Werror -D__NO_INLINE__ -mcmodel=medany -std=gnu99 -Wno-unused -Wno-attributes -fno-delete-null-pointer-checks -fno-strict-aliasing -O0 -g -mabi=lp64d -march=rv64imafdc -g -DPLUGIN_ENABLE_MULTIMEM -DBBL_PAYLOAD=\"bbl_payload\" -DBBL_LOGO_FILE=\"bbl_logo_file\" -DTARGET_PLATFORM_HEADER=\"platform/default/default.h\" -I. -I/keystone/riscv-pk/pk -I/keystone/riscv-pk/bbl -I/keystone/riscv-pk/sm -I/keystone/riscv-pk/dummy_payload -I/keystone/riscv-pk/machine -I/keystone/riscv-pk/util -c /keystone/riscv-pk/sm/ed25519/sc.c
+riscv64-unknown-linux-gnu-gcc -MMD -MP -Wall -Werror -D__NO_INLINE__ -mcmodel=medany -std=gnu99 -Wno-unused -Wno-attributes -fno-delete-null-pointer-checks -fno-strict-aliasing -O0 -g -mabi=lp64d -march=rv64imafdc -g -DPLUGIN_ENABLE_MULTIMEM -DBBL_PAYLOAD=\"bbl_payload\" -DBBL_LOGO_FILE=\"bbl_logo_file\" -DTARGET_PLATFORM_HEADER=\"platform/default/default.h\" -I. -I/keystone/riscv-pk/pk -I/keystone/riscv-pk/bbl -I/keystone/riscv-pk/sm -I/keystone/riscv-pk/dummy_payload -I/keystone/riscv-pk/machine -I/keystone/riscv-pk/util -c /keystone/riscv-pk/sm/platform/default/default.c
+[01m[K/keystone/riscv-pk/sm/platform/default/default.c:[m[K In function '[01m[Kplatform_random[m[K':
+[01m[K/keystone/riscv-pk/sm/platform/default/default.c:35:9:[m[K [01;36m[Knote: [m[K#pragma message: Platform has no entropy source, this is unsafe. TEST ONLY
+ #pragma [01;36m[Kmessage[m[K("Platform has no entropy source, this is unsafe. TEST ONLY")
+         [01;36m[K^~~~~~~[m[K
+riscv64-unknown-linux-gnu-gcc -MMD -MP -Wall -Werror -D__NO_INLINE__ -mcmodel=medany -std=gnu99 -Wno-unused -Wno-attributes -fno-delete-null-pointer-checks -fno-strict-aliasing -O0 -g -mabi=lp64d -march=rv64imafdc -g -DPLUGIN_ENABLE_MULTIMEM -DBBL_PAYLOAD=\"bbl_payload\" -DBBL_LOGO_FILE=\"bbl_logo_file\" -DTARGET_PLATFORM_HEADER=\"platform/default/default.h\" -I. -I/keystone/riscv-pk/pk -I/keystone/riscv-pk/bbl -I/keystone/riscv-pk/sm -I/keystone/riscv-pk/dummy_payload -I/keystone/riscv-pk/machine -I/keystone/riscv-pk/util -c /keystone/riscv-pk/sm/plugins/plugins.c
+riscv64-unknown-linux-gnu-ar rcv libsm_Clib.a sm.o sm-sbi.o cpu.o thread.o pmp.o enclave.o crypto.o attest.o region.o perm.o sha3.o keypair.o sign.o fe.o ge.o sc.o default.o plugins.o ipi.o trap.o
+r - sm.o
+r - sm-sbi.o
+r - cpu.o
+r - thread.o
+r - pmp.o
+r - enclave.o
+r - crypto.o
+r - attest.o
+r - region.o
+r - perm.o
+r - sha3.o
+r - keypair.o
+r - sign.o
+r - fe.o
+r - ge.o
+r - sc.o
+r - default.o
+r - plugins.o
+r - ipi.o
+r - trap.o
+riscv64-unknown-linux-gnu-ranlib libsm_Clib.a
+riscv64-unknown-linux-gnu-ar rcvT libsm.a libsm_Clib.a libsm_Rlib.a
+a - sm.o
+a - sm-sbi.o
+a - cpu.o
+a - thread.o
+a - pmp.o
+a - enclave.o
+a - crypto.o
+a - attest.o
+a - region.o
+a - perm.o
+a - sha3.o
+a - keypair.o
+a - sign.o
+a - fe.o
+a - ge.o
+a - sc.o
+a - default.o
+a - plugins.o
+a - ipi.o
+a - trap.o
+riscv64-unknown-linux-gnu-ranlib libsm.a
+riscv64-unknown-linux-gnu-gcc -Wl,--build-id=none -g -nostartfiles -nostdlib -static  -o pk pk.o -L.  -lpk  -lmachine  -lutil  -lsm -lgcc -T /keystone/riscv-pk/pk/pk.lds
+riscv64-unknown-linux-gnu-gcc -Wl,--build-id=none -g -nostartfiles -nostdlib -static  -o bbl bbl.o -L.  -lbbl  -ldummy_payload  -lmachine  -lutil  -lsm -lgcc -T /keystone/riscv-pk/bbl/bbl.lds
+make[4]: Leaving directory '/keystone/build/riscv-pk.build'
+make[3]: Leaving directory '/keystone/build'
+[ 45%] Built target sm
+make -f CMakeFiles/driver-sync.dir/build.make CMakeFiles/driver-sync.dir/depend
+make[3]: Entering directory '/keystone/build'
+cd /keystone/build && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /keystone /keystone /keystone/build /keystone/build /keystone/build/CMakeFiles/driver-sync.dir/DependInfo.cmake --color=
+make[3]: Leaving directory '/keystone/build'
+make -f CMakeFiles/driver-sync.dir/build.make CMakeFiles/driver-sync.dir/build
+make[3]: Entering directory '/keystone/build'
+mkdir -p /keystone/build/linux-keystone-driver.build
+rsync -r /keystone/linux-keystone-driver/ /keystone/build/linux-keystone-driver.build
+make[3]: Leaving directory '/keystone/build'
+[ 45%] Built target driver-sync
+make -f CMakeFiles/driver.dir/build.make CMakeFiles/driver.dir/depend
+make[3]: Entering directory '/keystone/build'
+cd /keystone/build && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /keystone /keystone /keystone/build /keystone/build /keystone/build/CMakeFiles/driver.dir/DependInfo.cmake --color=
+make[3]: Leaving directory '/keystone/build'
+make -f CMakeFiles/driver.dir/build.make CMakeFiles/driver.dir/build
+make[3]: Entering directory '/keystone/build'
+[ 54%] [34m[1mBuilding driver[0m
+make -C /keystone/build/linux.build O=/keystone/build/linux.build CROSS_COMPILE=riscv64-unknown-linux-gnu- ARCH=riscv M=/keystone/build/linux-keystone-driver.build modules
+make[4]: Entering directory '/keystone/build/linux.build'
+  CC [M]  /keystone/build/linux-keystone-driver.build/keystone.o
+In file included from [01m[K/keystone/build/linux-keystone-driver.build/keystone.c:7:0[m[K:
+[01m[K/keystone/build/linux-keystone-driver.build/keystone.h:54:0:[m[K [01;35m[Kwarning: [m[K"SBI_SM_MULTICLAVE_ECALL_PMP_LOCK" redefined
+ #define SBI_SM_MULTICLAVE_ECALL_PMP_LOCK 132
+ 
+[01m[K/keystone/build/linux-keystone-driver.build/keystone.h:53:0:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+ #define SBI_SM_MULTICLAVE_ECALL_PMP_LOCK 131
+ 
+[01m[K/keystone/build/linux-keystone-driver.build/keystone.h:83:0:[m[K [01;35m[Kwarning: [m[K"SBI_CALL_3" redefined
+ #define SBI_CALL_3(which, arg0, arg1, arg2) _SBI_CALL(which,arg0, arg1, arg2, 0, 0, 0)
+ 
+In file included from [01m[K/keystone/build/linux-keystone-driver.build/keystone.h:8:0[m[K,
+                 from [01m[K/keystone/build/linux-keystone-driver.build/keystone.c:7[m[K:
+[01m[K/keystone/linux/arch/riscv/include/asm/sbi.h:38:0:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+ #define SBI_CALL_3(which, arg0, arg1, arg2) \
+ 
+In file included from [01m[K/keystone/build/linux-keystone-driver.build/keystone.c:7:0[m[K:
+[01m[K/keystone/build/linux-keystone-driver.build/keystone.h:84:0:[m[K [01;35m[Kwarning: [m[K"SBI_CALL_4" redefined
+ #define SBI_CALL_4(which, arg0, arg1, arg2, arg3) _SBI_CALL(which, arg0, arg1, arg2, arg3, 0, 0)
+ 
+In file included from [01m[K/keystone/build/linux-keystone-driver.build/keystone.h:8:0[m[K,
+                 from [01m[K/keystone/build/linux-keystone-driver.build/keystone.c:7[m[K:
+[01m[K/keystone/linux/arch/riscv/include/asm/sbi.h:40:0:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+ #define SBI_CALL_4(which, arg0, arg1, arg2, arg3) \
+ 
+  CC [M]  /keystone/build/linux-keystone-driver.build/keystone-page.o
+In file included from [01m[K/keystone/build/linux-keystone-driver.build/keystone-page.c:7:0[m[K:
+[01m[K/keystone/build/linux-keystone-driver.build/keystone.h:54:0:[m[K [01;35m[Kwarning: [m[K"SBI_SM_MULTICLAVE_ECALL_PMP_LOCK" redefined
+ #define SBI_SM_MULTICLAVE_ECALL_PMP_LOCK 132
+ 
+[01m[K/keystone/build/linux-keystone-driver.build/keystone.h:53:0:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+ #define SBI_SM_MULTICLAVE_ECALL_PMP_LOCK 131
+ 
+[01m[K/keystone/build/linux-keystone-driver.build/keystone.h:83:0:[m[K [01;35m[Kwarning: [m[K"SBI_CALL_3" redefined
+ #define SBI_CALL_3(which, arg0, arg1, arg2) _SBI_CALL(which,arg0, arg1, arg2, 0, 0, 0)
+ 
+In file included from [01m[K/keystone/build/linux-keystone-driver.build/keystone.h:8:0[m[K,
+                 from [01m[K/keystone/build/linux-keystone-driver.build/keystone-page.c:7[m[K:
+[01m[K/keystone/linux/arch/riscv/include/asm/sbi.h:38:0:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+ #define SBI_CALL_3(which, arg0, arg1, arg2) \
+ 
+In file included from [01m[K/keystone/build/linux-keystone-driver.build/keystone-page.c:7:0[m[K:
+[01m[K/keystone/build/linux-keystone-driver.build/keystone.h:84:0:[m[K [01;35m[Kwarning: [m[K"SBI_CALL_4" redefined
+ #define SBI_CALL_4(which, arg0, arg1, arg2, arg3) _SBI_CALL(which, arg0, arg1, arg2, arg3, 0, 0)
+ 
+In file included from [01m[K/keystone/build/linux-keystone-driver.build/keystone.h:8:0[m[K,
+                 from [01m[K/keystone/build/linux-keystone-driver.build/keystone-page.c:7[m[K:
+[01m[K/keystone/linux/arch/riscv/include/asm/sbi.h:40:0:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+ #define SBI_CALL_4(which, arg0, arg1, arg2, arg3) \
+ 
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-page.c:[m[K In function '[01m[Kepm_init[m[K':
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-page.c:43:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   [01;35m[Kvaddr_t[m[K epm_vaddr = 0;
+   [01;35m[K^~~~~~~[m[K
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-page.c:[m[K In function '[01m[Kshm_init[m[K':
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-page.c:149:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   [01;35m[Kint[m[K is_cma = 0;
+   [01;35m[K^~~[m[K
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-page.c:[m[K In function '[01m[Kshm_destroy[m[K':
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-page.c:196:16:[m[K [01;35m[Kwarning: [m[Kpassing argument 1 of '[01m[Kfree_pages[m[K' makes integer from pointer without a cast [[01;35m[K-Wint-conversion[m[K]
+     free_pages([01;35m[Kshm[m[K->ptr, shm->order);
+                [01;35m[K^~~[m[K
+In file included from [01m[K/keystone/linux/include/linux/slab.h:15:0[m[K,
+                 from [01m[K/keystone/build/linux-keystone-driver.build/keystone.h:10[m[K,
+                 from [01m[K/keystone/build/linux-keystone-driver.build/keystone-page.c:7[m[K:
+[01m[K/keystone/linux/include/linux/gfp.h:540:13:[m[K [01;36m[Knote: [m[Kexpected '[01m[Klong unsigned int[m[K' but argument is of type '[01m[Kvoid *[m[K'
+ extern void [01;36m[Kfree_pages[m[K(unsigned long addr, unsigned int order);
+             [01;36m[K^~~~~~~~~~[m[K
+  CC [M]  /keystone/build/linux-keystone-driver.build/keystone-ioctl.o
+In file included from [01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:5:0[m[K:
+[01m[K/keystone/build/linux-keystone-driver.build/keystone.h:54:0:[m[K [01;35m[Kwarning: [m[K"SBI_SM_MULTICLAVE_ECALL_PMP_LOCK" redefined
+ #define SBI_SM_MULTICLAVE_ECALL_PMP_LOCK 132
+ 
+[01m[K/keystone/build/linux-keystone-driver.build/keystone.h:53:0:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+ #define SBI_SM_MULTICLAVE_ECALL_PMP_LOCK 131
+ 
+[01m[K/keystone/build/linux-keystone-driver.build/keystone.h:83:0:[m[K [01;35m[Kwarning: [m[K"SBI_CALL_3" redefined
+ #define SBI_CALL_3(which, arg0, arg1, arg2) _SBI_CALL(which,arg0, arg1, arg2, 0, 0, 0)
+ 
+In file included from [01m[K/keystone/build/linux-keystone-driver.build/keystone.h:8:0[m[K,
+                 from [01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:5[m[K:
+[01m[K/keystone/linux/arch/riscv/include/asm/sbi.h:38:0:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+ #define SBI_CALL_3(which, arg0, arg1, arg2) \
+ 
+In file included from [01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:5:0[m[K:
+[01m[K/keystone/build/linux-keystone-driver.build/keystone.h:84:0:[m[K [01;35m[Kwarning: [m[K"SBI_CALL_4" redefined
+ #define SBI_CALL_4(which, arg0, arg1, arg2, arg3) _SBI_CALL(which, arg0, arg1, arg2, arg3, 0, 0)
+ 
+In file included from [01m[K/keystone/build/linux-keystone-driver.build/keystone.h:8:0[m[K,
+                 from [01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:5[m[K:
+[01m[K/keystone/linux/arch/riscv/include/asm/sbi.h:40:0:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+ #define SBI_CALL_4(which, arg0, arg1, arg2, arg3) \
+ 
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:[m[K In function '[01m[Kkeystone_sm_print_stats[m[K':
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:54:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   [01;35m[Kstruct[m[K enclave_stats tmp_stats;
+   [01;35m[K^~~~~~[m[K
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:[m[K In function '[01m[Kkeystone_sm_print_rt_stats[m[K':
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:70:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   [01;35m[Kstruct[m[K enclave_rt_stats tmp_stats;
+   [01;35m[K^~~~~~[m[K
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:[m[K In function '[01m[Ksetup_dr_request[m[K':
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:178:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  [01;35m[Kva_list[m[K arg_list;
+  [01;35m[K^~~~~~~[m[K
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:181:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  [01;35m[Kint[m[K i;
+  [01;35m[K^~~[m[K
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:[m[K In function '[01m[Kkeystone_run_enclave[m[K':
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:244:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   [01;35m[Kuintptr_t[m[K resp0 = 0, resp1 = 0;
+   [01;35m[K^~~~~~~~~[m[K
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:[m[K In function '[01m[K__keystone_destroy_enclave[m[K':
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:325:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   [01;35m[Kint[m[K i;
+   [01;35m[K^~~[m[K
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:[m[K In function '[01m[Kkeystone_resume_enclave[m[K':
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:343:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   [01;35m[Kuintptr_t[m[K request_args[SBI_SM_REQUEST_ARGS_LIM], scratch = 0;
+   [01;35m[K^~~~~~~~~[m[K
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:352:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   [01;35m[Kuintptr_t[m[K resp0 = 0, resp1 = 0;
+   [01;35m[K^~~~~~~~~[m[K
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:343:52:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Kscratch[m[K' [[01;35m[K-Wunused-variable[m[K]
+   uintptr_t request_args[SBI_SM_REQUEST_ARGS_LIM], [01;35m[Kscratch[m[K = 0;
+                                                    [01;35m[K^~~~~~~[m[K
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:[m[K In function '[01m[Kkeystone_elasticlave_create[m[K':
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:379:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  [01;35m[Kuid_t[m[K uid;
+  [01;35m[K^~~~~[m[K
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:[m[K In function '[01m[Kkeystone_elasticlave_unmap[m[K':
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:412:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  [01;35m[Kint[m[K ret = SBI_CALL_1(SBI_SM_ELASTICLAVE_UNMAP, (uintptr_t)mem_mappings[i].uid);
+  [01;35m[K^~~[m[K
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:415:2:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+  [01;35m[Ksize_t[m[K size = mem_mappings[i].size;
+  [01;35m[K^~~~~~[m[K
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:[m[K In function '[01m[Kkeystone_release[m[K':
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:531:5:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+     [01;35m[Kstruct[m[K enclave *enclave = get_enclave_by_id(ueid);
+     [01;35m[K^~~~~~[m[K
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:[m[K In function '[01m[Kkeystone_sm_print_stats[m[K':
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:59:3:[m[K [01;35m[Kwarning: [m[Kignoring return value of '[01m[Kcopy_to_user[m[K', declared with attribute warn_unused_result [[01;35m[K-Wunused-result[m[K]
+   [01;35m[Kcopy_to_user(stats->stats, &tmp_stats, sizeof(struct enclave_stats))[m[K;
+   [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:[m[K In function '[01m[Kkeystone_sm_print_rt_stats[m[K':
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:75:3:[m[K [01;35m[Kwarning: [m[Kignoring return value of '[01m[Kcopy_to_user[m[K', declared with attribute warn_unused_result [[01;35m[K-Wunused-result[m[K]
+   [01;35m[Kcopy_to_user(stats->rt_stats, &tmp_stats, sizeof(struct enclave_rt_stats))[m[K;
+   [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+At top level:
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-ioctl.c:174:13:[m[K [01;35m[Kwarning: [m[K'[01m[Ksetup_dr_request[m[K' defined but not used [[01;35m[K-Wunused-function[m[K]
+ static void [01;35m[Ksetup_dr_request[m[K(struct enclave* enclave, uintptr_t dr_request, int* request_code, enum dr_request_type request_type, int num, ...){
+             [01;35m[K^~~~~~~~~~~~~~~~[m[K
+  CC [M]  /keystone/build/linux-keystone-driver.build/keystone-enclave.o
+In file included from [01m[K/keystone/build/linux-keystone-driver.build/keystone-enclave.c:6:0[m[K:
+[01m[K/keystone/build/linux-keystone-driver.build/keystone.h:54:0:[m[K [01;35m[Kwarning: [m[K"SBI_SM_MULTICLAVE_ECALL_PMP_LOCK" redefined
+ #define SBI_SM_MULTICLAVE_ECALL_PMP_LOCK 132
+ 
+[01m[K/keystone/build/linux-keystone-driver.build/keystone.h:53:0:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+ #define SBI_SM_MULTICLAVE_ECALL_PMP_LOCK 131
+ 
+[01m[K/keystone/build/linux-keystone-driver.build/keystone.h:83:0:[m[K [01;35m[Kwarning: [m[K"SBI_CALL_3" redefined
+ #define SBI_CALL_3(which, arg0, arg1, arg2) _SBI_CALL(which,arg0, arg1, arg2, 0, 0, 0)
+ 
+In file included from [01m[K/keystone/linux/arch/riscv/include/asm/tlbflush.h:43:0[m[K,
+                 from [01m[K/keystone/linux/arch/riscv/include/asm/pgtable.h:18[m[K,
+                 from [01m[K/keystone/linux/include/linux/mm.h:99[m[K,
+                 from [01m[K/keystone/linux/include/linux/scatterlist.h:8[m[K,
+                 from [01m[K/keystone/linux/include/linux/dma-mapping.h:11[m[K,
+                 from [01m[K/keystone/build/linux-keystone-driver.build/keystone-enclave.c:5[m[K:
+[01m[K/keystone/linux/arch/riscv/include/asm/sbi.h:38:0:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+ #define SBI_CALL_3(which, arg0, arg1, arg2) \
+ 
+In file included from [01m[K/keystone/build/linux-keystone-driver.build/keystone-enclave.c:6:0[m[K:
+[01m[K/keystone/build/linux-keystone-driver.build/keystone.h:84:0:[m[K [01;35m[Kwarning: [m[K"SBI_CALL_4" redefined
+ #define SBI_CALL_4(which, arg0, arg1, arg2, arg3) _SBI_CALL(which, arg0, arg1, arg2, arg3, 0, 0)
+ 
+In file included from [01m[K/keystone/linux/arch/riscv/include/asm/tlbflush.h:43:0[m[K,
+                 from [01m[K/keystone/linux/arch/riscv/include/asm/pgtable.h:18[m[K,
+                 from [01m[K/keystone/linux/include/linux/mm.h:99[m[K,
+                 from [01m[K/keystone/linux/include/linux/scatterlist.h:8[m[K,
+                 from [01m[K/keystone/linux/include/linux/dma-mapping.h:11[m[K,
+                 from [01m[K/keystone/build/linux-keystone-driver.build/keystone-enclave.c:5[m[K:
+[01m[K/keystone/linux/arch/riscv/include/asm/sbi.h:40:0:[m[K [01;36m[Knote: [m[Kthis is the location of the previous definition
+ #define SBI_CALL_4(which, arg0, arg1, arg2, arg3) \
+ 
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-enclave.c:[m[K In function '[01m[Kdestroy_shm_by_pa[m[K':
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-enclave.c:165:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   [01;35m[Kstruct[m[K shm* cur_entry = list_entry(ptr, struct shm, list);
+   [01;35m[K^~~~~~[m[K
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-enclave.c:[m[K In function '[01m[Kenclave_elasticlave_create[m[K':
+[01m[K/keystone/build/linux-keystone-driver.build/keystone-enclave.c:187:3:[m[K [01;35m[Kwarning: [m[KISO C90 forbids mixed declarations and code [[01;35m[K-Wdeclaration-after-statement[m[K]
+   [01;35m[Kstruct[m[K shm* shm = (struct shm*)kmalloc(sizeof(struct shm), GFP_KERNEL);
+   [01;35m[K^~~~~~[m[K
+  LD [M]  /keystone/build/linux-keystone-driver.build/keystone-driver.o
+  Building modules, stage 2.
+  MODPOST 1 modules
+  LD [M]  /keystone/build/linux-keystone-driver.build/keystone-driver.ko
+make[4]: Leaving directory '/keystone/build/linux.build'
+make[3]: Leaving directory '/keystone/build'
+[ 54%] Built target driver
+make -f CMakeFiles/tests.dir/build.make CMakeFiles/tests.dir/depend
+make[3]: Entering directory '/keystone/build'
+cd /keystone/build && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /keystone /keystone /keystone/build /keystone/build /keystone/build/CMakeFiles/tests.dir/DependInfo.cmake --color=
+make[3]: Leaving directory '/keystone/build'
+make -f CMakeFiles/tests.dir/build.make CMakeFiles/tests.dir/build
+make[3]: Entering directory '/keystone/build'
+[ 63%] [34m[1mBuilding tests[0m
+OUTPUT_DIR=/keystone/build/overlay/root /keystone/tests/tests/vault.sh
+make[4]: Entering directory '/keystone/sdk/rts/eyrie'
+rm -f eyrie-rt *.o
+rm boot.o interrupt.o printf.o syscall.o string.o linux_wrap.o io_wrap.o fast_io_wrap.o rt_util.o mm.o env.o freemem.o paging.o performance.o /keystone/sdk/rts/eyrie/rpc/rpc.o /keystone/sdk/rts/eyrie/rpc/rpc_crypto.o /keystone/sdk/rts/eyrie/rpc/edge_wrapper.o /keystone/sdk/rts/eyrie/rpc/rpc_crypto_enc.o
+rm: cannot remove 'boot.o': No such file or directory
+rm: cannot remove 'interrupt.o': No such file or directory
+rm: cannot remove 'printf.o': No such file or directory
+rm: cannot remove 'syscall.o': No such file or directory
+rm: cannot remove 'string.o': No such file or directory
+rm: cannot remove 'linux_wrap.o': No such file or directory
+rm: cannot remove 'io_wrap.o': No such file or directory
+rm: cannot remove 'fast_io_wrap.o': No such file or directory
+rm: cannot remove 'rt_util.o': No such file or directory
+rm: cannot remove 'mm.o': No such file or directory
+rm: cannot remove 'env.o': No such file or directory
+rm: cannot remove 'freemem.o': No such file or directory
+rm: cannot remove 'paging.o': No such file or directory
+rm: cannot remove 'performance.o': No such file or directory
+Makefile:56: recipe for target 'clean' failed
+make[4]: *** [clean] Error 1
+make[4]: Leaving directory '/keystone/sdk/rts/eyrie'
+make[4]: Entering directory '/keystone/sdk/rts/eyrie'
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c entry.S
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c fp_asm.S
+make -C tmplib
+make[5]: Entering directory '/keystone/sdk/rts/eyrie/tmplib'
+cp uaccess.o  ../
+make[5]: Leaving directory '/keystone/sdk/rts/eyrie/tmplib'
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c boot.c -o boot.o
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c interrupt.c -o interrupt.o
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c printf.c -o printf.o
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c syscall.c -o syscall.o
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c string.c -o string.o
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c linux_wrap.c -o linux_wrap.o
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c io_wrap.c -o io_wrap.o
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c fast_io_wrap.c -o fast_io_wrap.o
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c rt_util.c -o rt_util.o
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c mm.c -o mm.o
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c env.c -o env.o
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c freemem.c -o freemem.o
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c paging.c -o paging.o
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c performance.c -o performance.o
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c /keystone/sdk/rts/eyrie/rpc/rpc.c -o /keystone/sdk/rts/eyrie/rpc/rpc.o
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c /keystone/sdk/rts/eyrie/rpc/rpc_crypto.c -o /keystone/sdk/rts/eyrie/rpc/rpc_crypto.o
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c /keystone/sdk/rts/eyrie/rpc/edge_wrapper.c -o /keystone/sdk/rts/eyrie/rpc/edge_wrapper.o
+riscv64-unknown-linux-gnu-gcc -static -Wall -Werror -fPIE -fno-plt -fno-builtin -DUSE_FREEMEM  -I/keystone/sdk/lib/edge/include -I/keystone/sdk/rts/eyrie/rpc -I/keystone/sdk/rts/eyrie -DUSE_FREEMEM -DIO_SYSCALL_WRAPPING -DLINUX_SYSCALL_WRAPPING -DFAST_IO_SYSCALL_WRAPPING -DVSHMEM_ENABLED -DPERFORMANCE_MEASURE -I ./tmplib  -c /keystone/sdk/rts/eyrie/rpc/rpc_crypto_enc.c -o /keystone/sdk/rts/eyrie/rpc/rpc_crypto_enc.o
+riscv64-unknown-linux-gnu-ld -static -nostdlib --no-dynamic-linker -z text  -L/keystone/sdk/lib  -o eyrie-rt entry.o fp_asm.o boot.o interrupt.o printf.o syscall.o string.o linux_wrap.o io_wrap.o fast_io_wrap.o rt_util.o mm.o env.o freemem.o paging.o performance.o /keystone/sdk/rts/eyrie/rpc/rpc.o /keystone/sdk/rts/eyrie/rpc/rpc_crypto.o /keystone/sdk/rts/eyrie/rpc/edge_wrapper.o /keystone/sdk/rts/eyrie/rpc/rpc_crypto_enc.o /keystone/sdk/lib/libkeystone-edge.a uaccess.o -T runtime.lds
+make[4]: Leaving directory '/keystone/sdk/rts/eyrie'
+/keystone/tests/tests /keystone/build
+make[4]: Entering directory '/keystone/tests/tests'
+riscv64-unknown-linux-gnu-g++ -I. -I/keystone/sdk/lib/host/include -I/keystone/sdk/lib/edge/include -I/keystone/sdk/lib/verifier -std=c++11 -L/keystone/sdk/lib -o test-runner.riscv test-runner.o edge_wrapper.o /keystone/sdk/lib/libkeystone-host.a /keystone/sdk/lib/libkeystone-edge.a /keystone/sdk/lib/libkeystone-verifier.a
+make -C iozone; 
+make[5]: Entering directory '/keystone/tests/tests/iozone'
+make[5]: Nothing to be done for 'all'.
+make[5]: Leaving directory '/keystone/tests/tests/iozone'
+make -C icall-server;   make -C prototype; 
+make[5]: Entering directory '/keystone/tests/tests/icall-server'
+make -C enclaves
+make[6]: Entering directory '/keystone/tests/tests/icall-server/enclaves'
+make[6]: Nothing to be done for 'all'.
+make[6]: Leaving directory '/keystone/tests/tests/icall-server/enclaves'
+make -C host
+make[6]: Entering directory '/keystone/tests/tests/icall-server/host'
+riscv64-unknown-linux-gnu-g++ -I/keystone/sdk/lib/host/include -I/keystone/sdk/lib/edge/include -I/keystone/sdk/lib/verifier -std=c++11  -L/keystone/sdk/lib -lpthread -o icall-server.riscv icall-server.o /keystone/sdk/lib/libkeystone-host.a /keystone/sdk/lib/libkeystone-edge.a /keystone/sdk/lib/libkeystone-verifier.a
+make[6]: Leaving directory '/keystone/tests/tests/icall-server/host'
+mkdir -p build
+mkdir -p build_pack
+cp enclaves/icall-server*.eapp_riscv build_pack/
+cp host/icall-server.riscv build_pack/
+cp /keystone/sdk/rts/eyrie/eyrie-rt build_pack/
+cat /dev/null > build_pack/run_test
+echo "./icall-server.riscv 512" >> build_pack/run_test; 
+chmod +x build_pack/run_test
+makeself --noprogress build_pack build/icall-server.sh "Micro-benchmark icall-server" "./run_test"
+Header is 522 lines long
+
+WARNING: Overwriting existing file: build/icall-server.sh
+About to compress 9824 KB of data...
+Adding files to archive named "build/icall-server.sh"...
+./
+./icall-server.riscv
+./icall-server-s.eapp_riscv
+./icall-server-c.eapp_riscv
+./run_test
+./eyrie-rt
+CRC: 888567785
+MD5: 9aad65158ef06855a789989fdd9a7a25
+
+Self-extractable archive "build/icall-server.sh" successfully created.
+chmod +x build/icall-server.sh
+make[5]: Leaving directory '/keystone/tests/tests/icall-server'
+make[5]: Entering directory '/keystone/tests/tests/prototype'
+make -C enclaves
+make[6]: Entering directory '/keystone/tests/tests/prototype/enclaves'
+Makefile:14: target 'prototype-e6.o' given more than once in the same rule
+Makefile:17: target 'prototype-e6.eapp_riscv' given more than once in the same rule
+make[6]: Nothing to be done for 'all'.
+make[6]: Leaving directory '/keystone/tests/tests/prototype/enclaves'
+make -C host
+make[6]: Entering directory '/keystone/tests/tests/prototype/host'
+riscv64-unknown-linux-gnu-g++ -I/keystone/sdk/lib/host/include -I/keystone/sdk/lib/edge/include -I/keystone/sdk/lib/verifier -std=c++11  -L/keystone/sdk/lib -lpthread -o prototype.riscv prototype.o /keystone/sdk/lib/libkeystone-host.a /keystone/sdk/lib/libkeystone-edge.a /keystone/sdk/lib/libkeystone-verifier.a
+make[6]: Leaving directory '/keystone/tests/tests/prototype/host'
+mkdir -p build
+mkdir -p build_pack
+cp enclaves/prototype*.eapp_riscv build_pack/
+cp host/prototype.riscv build_pack/
+cp /keystone/sdk/rts/eyrie/eyrie-rt build_pack/
+cat /dev/null > build_pack/run_test
+echo "./prototype.riscv 512" >> build_pack/run_test; 
+chmod +x build_pack/run_test
+makeself --noprogress build_pack build/prototype.sh "Micro-benchmark prototype" "./run_test"
+Header is 522 lines long
+
+WARNING: Overwriting existing file: build/prototype.sh
+About to compress 41076 KB of data...
+Adding files to archive named "build/prototype.sh"...
+./
+./prototype-e6.eapp_riscv
+./prototype-e9.eapp_riscv
+./run_test
+./prototype-e4.eapp_riscv
+./prototype-e10.eapp_riscv
+./prototype-e3.eapp_riscv
+./prototype.riscv
+./prototype-e5.eapp_riscv
+./prototype-e1.eapp_riscv
+./prototype-e2.eapp_riscv
+./eyrie-rt
+./prototype-e8.eapp_riscv
+./prototype-e7.eapp_riscv
+CRC: 528533231
+MD5: fff0a75e6d3b5722c9205944c7510305
+
+Self-extractable archive "build/prototype.sh" successfully created.
+chmod +x build/prototype.sh
+make[5]: Leaving directory '/keystone/tests/tests/prototype'
+rm -f test
+echo "echo 'testing iozone'" >> test; echo "./test-runner.riscv iozone.eapp_riscv eyrie-rt" >> test; 
+echo "echo 'testing icall-server'" >> test; echo './icall-server.riscv $@' >> test;   echo "echo 'testing prototype'" >> test; echo './prototype.riscv $@' >> test; 
+chmod +x test
+make[4]: Leaving directory '/keystone/tests/tests'
+/keystone/build
+Header is 522 lines long
+
+WARNING: Overwriting existing file: /keystone/sdk/../build/overlay/root//tests.ke
+About to compress 15772 KB of data...
+Adding files to archive named "/keystone/sdk/../build/overlay/root//tests.ke"...
+./
+./test
+./iozone.eapp_riscv
+./lock-a.eapp_riscv
+./icall-server-s.eapp_riscv
+./test-runner.riscv
+./eyrie-rt
+./lock-b.eapp_riscv
+./lock.riscv
+CRC: 2267935193
+MD5: b0d55b696ffdd2358061ccab17adf0f4
+
+Self-extractable archive "/keystone/sdk/../build/overlay/root//tests.ke" successfully created.
+find /keystone/build/linux-keystone-driver.build -name *.ko -exec cp {} /keystone/build/overlay/root \;
+make[3]: Leaving directory '/keystone/build'
+[ 72%] Built target tests
+make -f CMakeFiles/image.dir/build.make CMakeFiles/image.dir/depend
+make[3]: Entering directory '/keystone/build'
+cd /keystone/build && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /keystone /keystone /keystone/build /keystone/build /keystone/build/CMakeFiles/image.dir/DependInfo.cmake --color=
+make[3]: Leaving directory '/keystone/build'
+make -f CMakeFiles/image.dir/build.make CMakeFiles/image.dir/build
+make[3]: Entering directory '/keystone/build'
+[ 81%] [34m[1mGenerating image[0m
+make -s -C /keystone/buildroot RISCV=/keystone/riscv/ PATH=/keystone/riscv//bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin O=/keystone/build/buildroot.build
+make[4]: Entering directory '/keystone/buildroot'
+[7m>>>   Finalizing target directory[27m
+Warning: host file "./share/man/man8/fsck.8" is touched by more than one package: [u'host-util-linux', u'host-e2fsprogs']
+Warning: host file "./sbin/fsck" is touched by more than one package: [u'host-util-linux', u'host-e2fsprogs']
+grep: ./.config: No such file or directory
+grep: ./.config: No such file or directory
+find: '/keystone/build/buildroot.build/target/usr/libexec/': No such file or directory
+[7m>>>   Sanitizing RPATH in target tree[27m
+[7m>>>   Copying overlay /keystone/build/overlay[27m
+[7m>>>   Generating root filesystems common tables[27m
+[7m>>>   Generating filesystem image rootfs.ext2[27m
+rootdir=/keystone/build/buildroot.build/build/buildroot-fs/ext2/target
+table='/keystone/build/buildroot.build/build/buildroot-fs/full_devices_table.txt'
+mke2fs 1.45.2 (27-May-2019)
+Creating regular file /keystone/build/buildroot.build/images/rootfs.ext2
+Creating filesystem with 61440 1k blocks and 15360 inodes
+Filesystem UUID: 22b7c7f4-766a-463d-b598-06115c2f7b98
+Superblock backups stored on blocks: 
+	8193, 24577, 40961, 57345
+
+Allocating group tables: 0/8   done                            
+Writing inode tables: 0/8   done                            
+Copying files into the device: done
+Writing superblocks and filesystem accounting information: 0/8   done
+
+[7m>>>   Generating filesystem image rootfs.tar[27m
+rootdir=/keystone/build/buildroot.build/build/buildroot-fs/tar/target
+table='/keystone/build/buildroot.build/build/buildroot-fs/full_devices_table.txt'
+make[4]: Leaving directory '/keystone/buildroot'
+riscv64-unknown-linux-gnu-objcopy -S -O binary --change-addresses -0x80000000 /keystone/build/riscv-pk.build/bbl /keystone/build/bbl.bin
+make[3]: Leaving directory '/keystone/build'
+[100%] Built target image
+make[2]: Leaving directory '/keystone/build'
+/usr/bin/cmake -E cmake_progress_start /keystone/build/CMakeFiles 0
+make[1]: Leaving directory '/keystone/build'

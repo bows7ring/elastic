@@ -87,6 +87,7 @@ static void test_get_enclave_region_index()
 
 int main()
 {
+    printf("test enclave:\n\n\n");
   const struct CMUnitTest tests[] = {
     cmocka_unit_test(test_is_create_args_valid),
     cmocka_unit_test(test_context_switch_to_enclave),

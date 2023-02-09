@@ -1,0 +1,5 @@
+break *0x80000000
+break run_enclave
+break mentry.S:296
+break *$mepc
+break *$sepc

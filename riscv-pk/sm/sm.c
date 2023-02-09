@@ -37,12 +37,16 @@ int osm_pmp_set(uint8_t perm)
 int smm_init()
 {
     int region = -1;
+    // SM metadata,smm_size is pgsize algined
+    // Top privilige doesn't allow overlap
+    // So the last arg should to be 0.
     int ret = pmp_region_init_atomic(SMM_BASE, SMM_SIZE, PMP_PRI_TOP, &region, 0);
     if(ret)
         return -1;
 
     return region;
 }
+#define RISCV_PGSIZE (1 << RISCV_PGSHIFT)
 
 int osm_init()
 {
@@ -53,6 +57,48 @@ int osm_init()
 
     return region;
 }
+
+/*
+    SM: 0x80000000 - 0x80200000
+    OS: 0 - -1
+*/
+
+
+#define EPM1_BASE 0x00000000be000000
+#define EPM2_BASE 0x00000000c1a00000
+#define EPM_SIZE 0x381b000
+
+
+// int EPM1_region_init() // TODO: tmp use this func to init first high pmp
+// {
+//     int region = -1;
+//     int ret =  pmp_region_init_atomic(EPM1_BASE, EPM_SIZE, PMP_PRI_HIGH, &region, 1);
+//         if(ret)
+//         return -1;
+
+//     return region;
+// }
+
+// int EPM2_region_init()
+// {
+//     int region = -1;
+//     int ret =  pmp_region_init_atomic(EPM2_BASE, EPM_SIZE, PMP_PRI_ANY, &region, 1);
+//         if(ret)
+//         return -1;
+
+//     return region;
+// }
+
+int Blocked_region_init()
+{
+    int region = -1; // all 
+    int ret =  pmp_region_init_atomic(0x00000000be000000, 0x20000000, PMP_PRI_LOW, &region, 1);
+        if(ret)
+        return -1;
+
+    return region;
+}
+
 
 void sm_sign(void* signature, const void* data, size_t len)
 {
@@ -72,16 +118,43 @@ void sm_init(void)
 {
     // initialize SMM
 
+    int EPM1_region_id = -1;
+    int EPM2_region_id = -1;
+    int Blocked_region_id = -1;
+
     spinlock_lock(&sm_init_lock);
 
     if(!sm_init_done) {
         sm_region_id = smm_init();
         if(sm_region_id < 0)
             die("[SM] intolerable error - failed to initialize SM memory");
+    printm("sm_region_id:   %d\n",sm_region_id);
+
 
         os_region_id = osm_init();
         if(os_region_id < 0)
             die("[SM] intolerable error - failed to initialize OS memory");
+    printm("os_region_id:   %d\n",os_region_id);
+
+    
+        /*EPM region test*/
+        
+        // EPM1_region_id = EPM1_region_init();
+        // if(EPM1_region_id < 0)
+        //     die("\nZZP DBG: EPM 1 region failed !\n");
+        // printm("EPM 1_region_id: %d\n",EPM1_region_id);
+
+        // EPM2_region_id = EPM2_region_init();
+        // if(EPM2_region_id < 0)
+        //     die("\nZZP DBG: EPM 2 region failed !\n");
+        // printm("EPM 2_region_id: %d\n",EPM2_region_id);
+
+        Blocked_region_id = Blocked_region_init();
+        if(Blocked_region_id < 0)
+            die("\nZZP DBG: Blocked_region failed !\n");
+        printm("Blocked_region_id: %d\n",Blocked_region_id);
+
+
 
         sm_init_done = 1;
 
@@ -91,7 +164,19 @@ void sm_init(void)
     }
 
     pmp_set(sm_region_id, PMP_NO_PERM);
+    
+    //  booting will fail, 
+    //  unless test region is ALL_PREM
+    // 
+    // pmp_set(EPM1_region_id, PMP_NO_PERM);
+    // pmp_set(EPM2_region_id, PMP_NO_PERM);
+    pmp_set(Blocked_region_id, PMP_NO_PERM);
+    printm("All the pre-set pmps succeed.\n\n");
+
+
     pmp_set(os_region_id, PMP_ALL_PERM);
+
+    // ready to enter OS context now.
 
     /* Fire platform specific global init */
     if(platform_init_global() != ENCLAVE_SUCCESS)

@@ -1,0 +1,30 @@
+#!/usr/bin/expect
+set timeout -1
+spawn sudo ./local-qemu-gdb.sh 
+#interact
+expect "密码："
+send "123\n"
+#expect "buildroot login: " 
+#send "root\n"
+
+#expect"Password:"
+puts "hello:\n\n\n"
+expect "login: "
+send "root\n"
+
+expect "Password: "
+send "sifive\n"
+
+expect "# "
+send "insmod keystone-driver.ko\n"
+
+expect "v0.2"
+send "./prototype.sh\n"
+
+expect "]# "
+
+send "\01x"
+send "x" 
+puts "qemu shut down\nbye" 
+interact
+

@@ -12,7 +12,7 @@
 #include "sm_types.h"
 
 #define PMP_N_REG         16 //number of PMP registers
-#define PMP_MAX_N_REGION  16 //maximum number of PMP regions
+#define PMP_MAX_N_REGION  32 //maximum number of PMP regions
 
 #define SET_BIT(bitmap, n) (bitmap |= (0x1 << (n)))
 #define UNSET_BIT(bitmap, n) (bitmap &= ~(0x1 << (n)))
@@ -22,6 +22,8 @@ enum pmp_priority {
   PMP_PRI_ANY,
   PMP_PRI_TOP,
   PMP_PRI_BOTTOM,
+  PMP_PRI_HIGH,
+  PMP_PRI_LOW
 };
 
 #define PMP_ALL_PERM  (PMP_W | PMP_X | PMP_R)
@@ -72,6 +74,10 @@ enum pmp_priority {
   return error; \
 }
 
+enum pmp_status{
+  virtual,
+  physical
+};
 
 /* PMP region type */
 struct pmp_region
@@ -81,12 +87,23 @@ struct pmp_region
   uintptr_t addr;
   int allow_overlap;
   int reg_idx;
+  enum pmp_status pmp_vp;
 };
 
 /* external functions */
+
+// vpmp
+int pmp_is_physical(int rid);
+int pmp_sleep(int region_idx);
+int pmp_wake(int region_idx);
+int pmp_expand(int region_idx, int arg1, int arg2);
+int pmp_vritualization(int region_idx);
+
+// old func
 int pmp_region_init_atomic(uintptr_t start, uint64_t size, enum pmp_priority pri, region_id* rid, int allow_overlap);
 int pmp_region_init(uintptr_t start, uint64_t size, enum pmp_priority pri, region_id* rid, int allow_overlap);
 int pmp_region_free_atomic(region_id region);
+int tmp_pmp_region_free_atomic(region_id region);
 int pmp_set(region_id n, uint8_t perm);
 int pmp_set_global(int region_idx, uint8_t perm, int self, uintptr_t mask);
 int pmp_unset(region_id n);

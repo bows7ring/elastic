@@ -18,10 +18,18 @@
 /* PMP global spin locks */
 static spinlock_t pmp_lock = SPINLOCK_INIT;
 
+static spinlock_t sleep_lock = SPINLOCK_INIT;
+
+
 /* PMP region getter/setters */
 static struct pmp_region regions[PMP_MAX_N_REGION];
-static uint32_t reg_bitmap = 0;
-static uint32_t region_def_bitmap = 0;
+static uint32_t reg_bitmap = 0x6006; // low 0110 & high 0110
+static uint64_t region_def_bitmap = 0x0;//001 << 1;
+
+static inline enum pmp_status region_pmp_is_physical(region_id i)
+{
+  return regions[i].pmp_vp;
+}
 
 static inline int region_register_idx(region_id i)
 {
@@ -101,6 +109,7 @@ static void region_init(region_id i,
   regions[i].addrmode = addrmode;
   regions[i].allow_overlap = allow_overlap;
   regions[i].reg_idx = (addrmode == PMP_TOR && reg_idx > 0 ? reg_idx + 1 : reg_idx);
+  regions[i].pmp_vp = virtual;
 }
 
 static int is_pmp_region_valid(region_id region_idx)
@@ -112,7 +121,7 @@ static int search_rightmost_unset(uint32_t bitmap, int max, uint32_t mask)
 {
   int i = 0;
 
-  assert(max < 32);
+  assert(max <= 32);
   assert(!((mask + 1) & mask));
 
   while(mask < (1UL << max)) {
@@ -211,10 +220,88 @@ void pmp_ipi_update(int* args) {
  *
  **********************************/
 
+
+int pmp_is_physical(int rid) {
+  return region_pmp_is_physical(rid);
+}
+
+int pmp_expand(int region_idx, int arg1, int arg2) {
+  // sleep();
+  die("expand");
+  printm("\n\n\nexpand test rid: %d\n\n\n\n", region_idx);
+  // regions[region_idx].size += 0x4000;
+  // wake();
+  return 0;
+}
+
+
+int pmp_wake(int region_idx) {
+/* TODO:
+  check the previous status.
+  
+*/
+  if(region_pmp_is_physical(region_idx) == physical)  {
+    printm("\t\t!!! in pmp wake, no.%d is %d\n",region_idx, regions[region_idx].pmp_vp); // no use?
+    return 0;
+  }
+
+
+  spinlock_lock(&sleep_lock);
+
+  int reg_idx = 0;
+
+/* TODO:*/
+  if(region_needs_two_entries(region_idx)) {
+    reg_idx = get_conseq_free_reg_idx();
+    if(reg_idx <= 0)
+     { 
+      // printm("\t\t!!! in pmp wake, no.%d is %d\n",region_idx, regions[region_idx].pmp_vp);
+      die("pmp reconfig error 1: PMPs RUN OUT");
+     }
+    // SET_BIT(reg_bitmap, regions[region_idx].reg_idx);
+    regions[region_idx].reg_idx = reg_idx + 1;
+    SET_BIT(reg_bitmap, regions[region_idx].reg_idx);
+    SET_BIT(reg_bitmap, regions[region_idx].reg_idx - 1);
+  }
+  else {
+    reg_idx = get_free_reg_idx();
+    regions[region_idx].reg_idx = reg_idx;
+    SET_BIT(reg_bitmap, regions[region_idx].reg_idx);
+  }
+
+
+  // SET_BIT(reg_bitmap, regions[region_idx].reg_idx);
+  SET_BIT(region_def_bitmap, region_idx);
+  regions[region_idx].pmp_vp = physical;
+
+  spinlock_unlock(&sleep_lock);
+  // printm("wake def bit map: %x , bitmap:%x\n",region_def_bitmap, reg_bitmap);
+  
+  return PMP_SUCCESS;
+}
+
+int pmp_sleep(int region_idx) {
+  
+  // printm("\t\t!!! in pmp sleep,%d is %d\n",region_idx, regions[region_idx].pmp_vp);
+
+  spinlock_lock(&sleep_lock);
+
+  // assert(region_pmp_is_physical(region_idx));
+  pmp_vritualization(region_idx);
+  regions[region_idx].pmp_vp = virtual;
+  
+  spinlock_unlock(&sleep_lock);
+  printm("sleep def bit map: %x , bitmap %x\n",region_def_bitmap, reg_bitmap);
+
+  return PMP_SUCCESS;
+}
+
 int pmp_unset_global(int region_idx)
 {
-  if(!is_pmp_region_valid(region_idx))
-    PMP_ERROR(PMP_REGION_INVALID, "Invalid PMP region index");
+  if(!is_pmp_region_valid(region_idx)) {
+    UNSET_BIT(region_def_bitmap, region_idx);
+    printm("\t%s  Invalid PMP region index %d\n FIXME: Now, we simply unset the def bitmap of sleeping encl", __func__, region_idx);
+  }
 
   /* We avoid any complex PMP-related IPI management
    * by ensuring only one hart can enter this region at a time */
@@ -280,9 +367,14 @@ int pmp_set_global(int region_idx, uint8_t perm, int self, uintptr_t enclave_mas
 
 int pmp_set(int region_idx, uint8_t perm)
 {
-  if(!is_pmp_region_valid(region_idx))
-    PMP_ERROR(PMP_REGION_INVALID, "Invalid PMP region index");
 
+  if(!is_pmp_region_valid(region_idx))
+    {// PMP_ERROR(PMP_REGION_INVALID, "Invalid PMP region index");
+      printm("check def bit map: %x , bitmap %x\n",region_def_bitmap, reg_bitmap);
+
+      printm("\n\n\n\n\t%d\n\n\n\t", region_idx);
+      die("pmp_set: invalid");
+    }
   uint8_t perm_bits = perm & PMP_ALL_PERM;
   /*perm_bits = PMP_ALL_PERM;*/
   pmpreg_id reg_idx = region_register_idx(region_idx);
@@ -359,6 +451,11 @@ int pmp_region_init_atomic(uintptr_t start, uint64_t size, enum pmp_priority pri
 
 static int tor_region_init(uintptr_t start, uint64_t size, enum pmp_priority priority, region_id* rid, int allow_overlap)
 {
+  printm("\nTOR,%lx+%lx pri[%d]\n", start, size, priority);
+  //sbi_printf("pmp_set() [hart %d]: reg[%d], mode[%s], range[0x%lx-0x%lx], perm[0x%x]\r\n",
+  //       current_hartid(), reg_idx, (region_is_tor(region_idx) ? "TOR":"NAPOT"),
+  //       region_get_addr(region_idx), region_get_addr(region_idx) + region_get_size(region_idx), perm);
+  //sbi_printf("  pmp[%d] = pmpaddr: 0x%lx, pmpcfg: 0x%lx\r\n", reg_idx, pmpaddr, pmpcfg);
   pmpreg_id reg_idx = -1;
   region_id region_idx = -1;
   int region_overlap = 0, i=0;
@@ -382,7 +479,7 @@ static int tor_region_init(uintptr_t start, uint64_t size, enum pmp_priority pri
         PMP_ERROR(PMP_REGION_MAX_REACHED, "No available PMP register");
       if(TEST_BIT(reg_bitmap, reg_idx) || TEST_BIT(reg_bitmap, reg_idx + 1) || reg_idx + 1 >= PMP_N_REG)
         PMP_ERROR(PMP_REGION_MAX_REACHED, "PMP register unavailable");
-
+      // printm("reg idx: %d\n",reg_idx);
       break;
     }
     case(PMP_PRI_TOP): {
@@ -390,6 +487,15 @@ static int tor_region_init(uintptr_t start, uint64_t size, enum pmp_priority pri
       reg_idx = 0;
       if(TEST_BIT(reg_bitmap, reg_idx))
         PMP_ERROR(PMP_REGION_MAX_REACHED, "PMP register unavailable");
+      break;
+    }
+    case(PMP_PRI_HIGH): {
+      reg_idx = 1;
+      break;
+    }
+    case(PMP_PRI_LOW): {
+      /* Low pmp for blocked area, NAPOT ONLY */
+      reg_idx = PMP_N_REG - 3;
       break;
     }
     default: {
@@ -400,16 +506,22 @@ static int tor_region_init(uintptr_t start, uint64_t size, enum pmp_priority pri
   // initialize the region
   region_init(region_idx, start, size, PMP_TOR, allow_overlap, reg_idx);
   SET_BIT(region_def_bitmap, region_idx);
-  SET_BIT(reg_bitmap, reg_idx);
-
-  if(reg_idx > 0)
-    SET_BIT(reg_bitmap, reg_idx + 1);
-
+  printm("def bit map: %x ",region_def_bitmap);
+  
+   /* pmp of OS or SM should set bitmap */
+  if (priority != PMP_PRI_ANY) {
+    SET_BIT(reg_bitmap, reg_idx);
+    if(reg_idx > 0)
+      SET_BIT(reg_bitmap, reg_idx + 1);
+    printm("reg bit map: %x\n",reg_bitmap);
+  }
+  
   return PMP_SUCCESS;
 }
 
 static int napot_region_init(uintptr_t start, uint64_t size, enum pmp_priority priority, region_id* rid, int allow_overlap)
 {
+  printm("\nNAPOT,%lx+%lx pri[%d]\n", start, size, priority);
   pmpreg_id reg_idx = -1;
   region_id region_idx = -1;
   int region_overlap = 0, i = 0;
@@ -446,12 +558,30 @@ static int napot_region_init(uintptr_t start, uint64_t size, enum pmp_priority p
       reg_idx = 0;
       if(TEST_BIT(reg_bitmap, reg_idx))
         PMP_ERROR(PMP_REGION_MAX_REACHED, "PMP register unavailable");
+      // SET_BIT(reg_bitmap, reg_idx); // FIXME: fuck !  no need 
+
+      // printm("\n\n\nnmsl\n\n\y");
       break;
     }
     case(PMP_PRI_BOTTOM): {
       /* the bottom register can be used by multiple regions,
        * so we don't check its availability */
       reg_idx = PMP_N_REG - 1;
+      // SET_BIT(reg_bitmap, reg_idx);
+      break;
+    }
+    case(PMP_PRI_LOW): {
+      /* Low pmp for blocked area, NAPOT ONLY */
+      reg_idx = PMP_N_REG - 3;
+      break;
+    }
+    case(PMP_PRI_HIGH): {
+      // printm(" def bit map: %x , bitmap %x\n",region_def_bitmap, reg_bitmap);
+
+      reg_idx = 1; // 
+      if(TEST_BIT(reg_bitmap, reg_idx) || reg_idx >= PMP_N_REG)
+        // PMP_ERROR(PMP_REGION_MAX_REACHED, "PMP register unavailable");
+        die("napot high PMP re-use!!!\n\n\n\n\n");
       break;
     }
     default: {
@@ -462,20 +592,31 @@ static int napot_region_init(uintptr_t start, uint64_t size, enum pmp_priority p
   // initialize the region
   region_init(region_idx, start, size, PMP_NAPOT, allow_overlap, reg_idx);
   SET_BIT(region_def_bitmap, region_idx);
-  SET_BIT(reg_bitmap, reg_idx);
+  printm("def bit map: %x ",region_def_bitmap);
+  
+   /* pmp of OS or SM should set bitmap */
+  
+  // if (priority == PMP_PRI_TOP || priority == PMP_PRI_BOTTOM) {
+  //   printm("\n\n\n\tfuck im here\n\n\n");
+  //   SET_BIT(reg_bitmap, reg_idx);
+  // }
+  printm("reg bit map: %x\n",reg_bitmap);
 
   return PMP_SUCCESS;
 }
 
 int pmp_region_free_atomic(int region_idx)
 {
-
+  // SM's PMP should never be cleaned.
+  assert(region_idx);
   spinlock_lock(&pmp_lock);
 
   if(!is_pmp_region_valid(region_idx))
   {
     spinlock_unlock(&pmp_lock);
-    PMP_ERROR(PMP_REGION_INVALID, "Invalid PMP region index");
+    printm("pmp_region_free_atomic 607: invalid  %d\n", region_idx);
+    // PMP_ERROR(PMP_REGION_INVALID, "Invalid PMP region index");
+    // die("pmp_region_free_atomic: invalid");
   }
 
   pmpreg_id reg_idx = region_register_idx(region_idx);
@@ -487,6 +628,69 @@ int pmp_region_free_atomic(int region_idx)
   region_clear_all(region_idx);
 
   spinlock_unlock(&pmp_lock);
+
+  // printm("free reg bit map: %x\n",reg_bitmap);
+
+  return PMP_SUCCESS;
+}
+
+ /* free tmp pmp */
+int tmp_pmp_region_free_atomic(int region_idx)
+{
+  // SM's PMP should never be cleaned.
+  assert(region_idx);
+  spinlock_lock(&pmp_lock);
+
+  if(!is_pmp_region_valid(region_idx))
+  {
+    spinlock_unlock(&pmp_lock);
+    printm("%d\n", region_idx);
+    // PMP_ERROR(PMP_REGION_INVALID, "Invalid PMP region index");
+    die("pmp_region_free_atomic: invalid");
+  }
+/*
+  // dont clean bitmap. 0110 
+
+  pmpreg_id reg_idx = region_register_idx(region_idx);
+  UNSET_BIT(region_def_bitmap, region_idx);
+  UNSET_BIT(reg_bitmap, reg_idx);
+  if(region_needs_two_entries(region_idx))
+    UNSET_BIT(reg_bitmap, reg_idx - 1);
+*/
+
+  region_clear_all(region_idx);
+
+  spinlock_unlock(&pmp_lock);
+
+  printm("free tmp reg bit map: %x\n",reg_bitmap);
+
+  return PMP_SUCCESS;
+}
+
+// clear pmp bitmaps. Keep regions[] unchanged.
+int pmp_vritualization(int region_idx) {
+
+  spinlock_lock(&pmp_lock);
+
+  if(!is_pmp_region_valid(region_idx))
+  {
+    spinlock_unlock(&pmp_lock);
+    // printm("pmp_vritualization %d\n", region_idx);
+    // PMP_ERROR(PMP_REGION_INVALID, "Invalid PMP region index");
+    die("pmp_vritualization: invalid");
+  }
+
+  pmpreg_id reg_idx = region_register_idx(region_idx);
+  UNSET_BIT(region_def_bitmap, region_idx);
+  UNSET_BIT(reg_bitmap, reg_idx);
+  if(region_needs_two_entries(region_idx))
+    UNSET_BIT(reg_bitmap, reg_idx - 1);
+
+  // region_clear_all(region_idx);
+
+  spinlock_unlock(&pmp_lock);
+
+  // printm("pmp_vritualization reg bitmap: %x\n",reg_bitmap);
 
   return PMP_SUCCESS;
 }
@@ -511,13 +715,14 @@ int pmp_region_init(uintptr_t start, uint64_t size, enum pmp_priority priority, 
 
   /* if the address covers the entire RAM or it's NAPOT */
   int r;
+  // if (priority == PMP_PRI_HIGH) {} // this seems not necessary
   if ((size == -1UL && start == 0) ||
       (!(size & (size - 1)) && !(start & (size - 1)))) {
     r = napot_region_init(start, size, priority, rid, allow_overlap);
   }
   else
   {
-    if(priority != PMP_PRI_ANY &&
+    if((priority == PMP_PRI_TOP || priority == PMP_PRI_BOTTOM) &&
       (priority != PMP_PRI_TOP || start != 0)) {
       PMP_ERROR(PMP_REGION_IMPOSSIBLE_TOR, "The top-priority TOR PMP entry must start from address 0");
     }
@@ -540,5 +745,4 @@ uint64_t pmp_region_get_size(region_id i)
     return region_get_size(i);
   return 0;
 }
-
 

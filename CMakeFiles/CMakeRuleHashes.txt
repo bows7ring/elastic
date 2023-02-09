@@ -1,0 +1,27 @@
+# Hashes of file build rules.
+9e82419487e4dd40f8ada8695b3cee53 CMakeFiles/bootrom
+586063af1b0f53c0d54ba3828caed77d CMakeFiles/buildroot
+68b0e8e7a8dc5f88d1e9c86ccbd6fd93 CMakeFiles/driver
+b888d952c743509ea7967788c9abd087 CMakeFiles/driver-sync
+730b68dc3dc66c5e287ad701e8d72a9f CMakeFiles/image
+913bf6bfa0718eb681a3c47aeaf2efa4 CMakeFiles/linux
+0118f90b4943152f8d5cc6e00f3ce04f CMakeFiles/linux64.patch
+3081d339e3a9ea05fd9c535a91213068 CMakeFiles/qemu
+354a88f792c8fed90f5fe6fc3385a185 CMakeFiles/qemu-pmp-bug.patch
+a04a7f8f5dec13682dd87db33746e13d CMakeFiles/qemu-secure-boot.patch
+e07715c89ccf754c89abfa861ffa0ebf CMakeFiles/run-tests
+a73d1d20caaaa4c8147a5ed21119da20 CMakeFiles/sm
+2ee90c8c57519e1ce4c3dc503349de4c CMakeFiles/tests
+3081d339e3a9ea05fd9c535a91213068 CMakeFiles/tools
+6c97e7a318eeab25bfd15ea5b60a655a bootrom.build
+060ed123995e96d10285d9c50c21ea38 buildroot.build
+9a721ba09e9b93fe207dd2f60f4b679d buildroot.build/.config
+f44ea93d9c449933ab5c48192eb12e5a linux.build/.config
+fcb3a31f349b31996dfe5cb0462d208c overlay/root
+97ba744d9129c7d71714b29ddb265a9b qemu/config-host.mak
+66c046aa15ce91cf6d8fb833f6b45c68 qemu/riscv64-softmmu/qemu-system-riscv64
+f0fe4a03eb1062fb788acf6ecc444c71 riscv-pk.build
+aae448e6f768f43a3b10db950f232810 scripts
+fee0a6182eb2f9501c357759233a1251 scripts/run-qemu.sh
+f669d0f0507567ba4e184ed586e89bc8 scripts/test-qemu.sh
+a39ceb1ff28dbc83d5bf270b19eb53a8 scripts/travis.sh

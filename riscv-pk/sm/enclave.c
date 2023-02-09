@@ -14,6 +14,14 @@
 #include "ipi.h"
 
 #define ENCL_TIME_SLICE 100000
+static int window[4] = {0};
+static void disp_window() {
+    printm("\ndisp window:  ");
+    for (int i=0; i<4; i++) {
+        printm("%d ",window[0]);
+    }
+    printm("\n\n");
+}
 
 struct enclave enclaves[ENCLAVES_MAX];
 struct region shared_regions[REGIONS_MAX];
@@ -59,6 +67,10 @@ static void terminate_enclaves(uintptr_t enclave_mask){
 static enclave_ret_code context_switch_to_enclave(uintptr_t* regs,
         struct enclave* encl,
         int load_parameters){
+
+    // unsigned long cyc1, cyc2, cyc3, cyc4, cyc5;
+
+    // printm("[ load para ] %d\n\n",load_parameters);
     if(!load_parameters){
         performance_check_end(&encl->stats.host_execution);
         performance_count(&encl->stats.host_execution);
@@ -67,6 +79,9 @@ static enclave_ret_code context_switch_to_enclave(uintptr_t* regs,
     /* save host context */
     swap_prev_state(&encl->threads[0], regs, 1);
     swap_prev_mepc(&encl->threads[0], read_csr(mepc));
+
+    // cyc1 = rdcycle();
+
 
     uintptr_t interrupts = MIP_SSIP;
     write_csr(mideleg, interrupts); // delegate software interrupts to runtime
@@ -105,25 +120,66 @@ static enclave_ret_code context_switch_to_enclave(uintptr_t* regs,
     // set PMP
     int memid;
     ipi_acquire_lock(&encl_lock);
+    // printm("\nto enclave\n");
 
-    osm_pmp_set(PMP_NO_PERM);
+    osm_pmp_set(PMP_NO_PERM); // can not be deleted
+
+    // cyc2 = rdcycle();
+/* TODO: don't need to update */
+
+    // for(memid = 0; memid < REGIONS_MAX; memid ++){
+    //     if(shared_regions[memid].type != REGION_INVALID){
+    //         int old_perm = get_perm(&shared_regions[memid].perm_conf, EID_UNTRUSTED);
+    //         int new_perm = get_perm(&shared_regions[memid].perm_conf, encl->eid);
+    //         if(old_perm != new_perm)
+    //             pmp_set(shared_regions[memid].pmp_rid, new_perm);
+    //     }
+    // }
+    // cyc3 = rdcycle();
 
 
-    for(memid = 0; memid < REGIONS_MAX; memid ++){
-        if(shared_regions[memid].type != REGION_INVALID){
-            int old_perm = get_perm(&shared_regions[memid].perm_conf, EID_UNTRUSTED);
-            int new_perm = get_perm(&shared_regions[memid].perm_conf, encl->eid);
-            if(old_perm != new_perm)
-                pmp_set(shared_regions[memid].pmp_rid, new_perm);
+/* FIXME: FIFO  window for PMP */
+/* wake new pmp */
+
+    int flag = 0;   
+    for (int i=0; i<3; i++) {
+        if(window[i] == encl->epm.pmp_rid) {
+            flag = 1;
+            // printm("\nrid:%d is flesh, noneed to wake\n", encl->epm.pmp_rid);
         }
     }
+
+    if(!flag) {
+        pmp_wake(encl->epm.pmp_rid);
+        // printm("\n\t wake and update the new pmp: %d\n\n", encl->epm.pmp_rid);
+        // for (int j=0; j<3; j++) {
+        window[3] = window[0]; // mark the evicted pmp.
+        window[0] = window[1];
+        window[1] = window[2];
+        window[2] = encl->epm.pmp_rid;
+        // }
+    }
+
+
+
+    // cyc4 = rdcycle();
+
+    /* make sure the pmp is flesh */
+
     pmp_set(encl->epm.pmp_rid, PMP_ALL_PERM);
-    int i;
-    for(i = 1; i < ENCLAVES_MAX; i ++)
-        if(enclaves + i != encl && enclaves[i].state != INVALID){
-            pmp_set(enclaves[i].utm.pmp_rid, PMP_NO_PERM);
-        }
+
+
+/* TODO: we have bolcked area, don't need to clean other encl's perm */
+    // int i;
+    // for(i = 1; i < ENCLAVES_MAX; i ++)
+    //     if(enclaves + i != encl && enclaves[i].state != INVALID){
+    //         pmp_set(enclaves[i].utm.pmp_rid, PMP_NO_PERM);
+    //         // printm("\n\n\nin\n\n");
+    //         /* free the physical pmp of sleeping enclaves */        
+    //     }
+
     pmp_set(encl->utm.pmp_rid, PMP_ALL_PERM);
+    
 
 
     // Setup any platform specific defenses
@@ -134,38 +190,75 @@ static enclave_ret_code context_switch_to_enclave(uintptr_t* regs,
 
     ipi_release_lock(&encl_lock);
 
+    // cyc5 = rdcycle();
+
     swap_prev_mpp(&encl->threads[0], regs);
     performance_check_end(&encl->stats.switch_to_enclave);
     performance_count(&encl->stats.switch_to_enclave);
     performance_check_start(&encl->stats.enclave_execution);
 
     /*clear_csr(mie, MIP_MTIP);*/
+    // printm("\n\nto encl performance check:\n regs %ld, for1 %ld, wake %ld, for2 %ld\ntotal:%ld\n",
+    //     cyc2-cyc1, cyc3-cyc2, cyc4-cyc3, cyc5-cyc4, cyc5-cyc1);
 
+    printm("\nto encl performance :[e%d: %d, %ld]", encl->eid, encl->stats.switch_to_enclave.checked_cnt,
+            encl->stats.switch_to_enclave.total_cycle/*, encl->stats.enclave_execution.total_cycle*/);
+    // printm("\n\n Elasticlave and Multiclave\n\n\n\n");
     return ENCLAVE_SUCCESS;
 }
 
 static void context_switch_to_host(uintptr_t* encl_regs,
         struct enclave* encl,
         int return_on_resume){
+
+    // printm("[ return on resume ] %d\n\n", return_on_resume);
+    
     performance_check_end(&encl->stats.enclave_execution);
     performance_count(&encl->stats.enclave_execution);
 
     performance_check_start(&encl->stats.switch_to_host);
 
+    // unsigned long cyc1, cyc2, cyc3, cyc4, cyc5;
+
+    // cyc1 = rdcycle();
 
     // set PMP
     int memid;
     ipi_acquire_lock(&encl_lock);
-    for(memid = 0; memid < REGIONS_MAX; memid ++){
-        if(shared_regions[memid].type != REGION_INVALID){
-            int old_perm = get_perm(&shared_regions[memid].perm_conf, encl->eid);
-            int new_perm = get_perm(&shared_regions[memid].perm_conf, EID_UNTRUSTED);
-            if(old_perm != new_perm){
-                pmp_set(shared_regions[memid].pmp_rid, new_perm);
-            }
-        }
-    }
+
+/* TODO: no update */
+
+    // for(memid = 0; memid < REGIONS_MAX; memid ++){
+    //     if(shared_regions[memid].type != REGION_INVALID){
+    //         int old_perm = get_perm(&shared_regions[memid].perm_conf, encl->eid);
+    //         int new_perm = get_perm(&shared_regions[memid].perm_conf, EID_UNTRUSTED);
+    //         if(old_perm != new_perm){
+    //             pmp_set(shared_regions[memid].pmp_rid, new_perm);
+    //         }
+    //     }
+    // }
+    // printm("\nto host\n");
     pmp_set(encl->epm.pmp_rid, PMP_NO_PERM);
+
+    // cyc2 = rdcycle();
+
+
+/* FIXME: FIFO  window for PMP */
+/* sleep evicted pmp */
+
+    if (window[3]) {
+        pmp_sleep(window[3]);
+        // printm("\n\tevict and sleep the pmp: %d\n\n", window[3]);
+        window[3] = 0;
+    }
+
+
+
+    
+    
+    // cyc3 = rdcycle();
+
+/* TODO: utm ?  keep this unchanged */
     int i;
     for(i = 1; i < ENCLAVES_MAX; i ++)
         if(enclaves + i != encl && enclaves[i].state != INVALID){
@@ -173,7 +266,11 @@ static void context_switch_to_host(uintptr_t* encl_regs,
         }
 
     // Reconfigure platform specific defenses
+
+
     osm_pmp_set(PMP_ALL_PERM);
+
+    // cyc4 = rdcycle();
 
     platform_switch_from_enclave(encl);
     cpu_exit_enclave_context();
@@ -201,6 +298,7 @@ static void context_switch_to_host(uintptr_t* encl_regs,
         set_csr(mip, MIP_SEIP);
     }
 
+    // cyc5 = rdcycle();
 
     swap_prev_mpp(&encl->threads[0], encl_regs);
 
@@ -210,6 +308,14 @@ static void context_switch_to_host(uintptr_t* encl_regs,
     performance_count(&encl->stats.switch_to_host);
 
     /*set_csr(mie, MIP_MTIP);*/
+
+
+    // printm("\n\nto host performance check:\n for1 %ld, sleep %ld, for2 %ld, switch %ld\ntotal:%ld\n",
+    //     cyc2-cyc1, cyc3-cyc2, cyc4-cyc3, cyc5-cyc4, cyc5-cyc1);
+
+    printm("\nto host performance :[e%d: %d, %ld ]", encl->eid, encl->stats.switch_to_host.checked_cnt,
+            encl->stats.switch_to_host.total_cycle/*, encl->stats.host_execution.total_cycle*/);
+
 }
 
 
@@ -526,6 +632,7 @@ enclave_ret_code create_enclave(struct keystone_sbi_create create_args)
 {
     /* EPM and UTM parameters */
     uintptr_t base = create_args.epm_region.paddr;
+    // printm("## M mode ##, %s:%d region addr%lx\n", __FILE__, __LINE__, base);
     size_t size = create_args.epm_region.size;
     uintptr_t utbase = create_args.utm_region.paddr;
     size_t utsize = create_args.utm_region.size;
@@ -571,11 +678,11 @@ enclave_ret_code create_enclave(struct keystone_sbi_create create_args)
 
     if(pmp_region_init_atomic(base, size, PMP_PRI_ANY, &region, 0))
         goto free_encl_idx;
-
+    printm("\nEPM region {%d}\n", region);
     // create PMP region for shared memory
     if(pmp_region_init_atomic(utbase, utsize, PMP_PRI_ANY, &shared_region, 0))
         goto free_region;
-
+    printm("\nUTM region {%d}\n", shared_region);
     // set pmp registers for private region (not shared)
     if(pmp_set_global(region, PMP_NO_PERM, 1, (uintptr_t)-1) ||
             pmp_set_global(shared_region, PMP_ALL_PERM, 1, ENCLAVE_MASK(EID_UNTRUSTED)))
@@ -586,6 +693,7 @@ enclave_ret_code create_enclave(struct keystone_sbi_create create_args)
 
     // initialize enclave metadata
     encl->epm.pmp_rid = region;
+    // printm(";;;;;;;;;;;;;;;;;encl.pmp_rid == %d\n\n",region);
     encl->epm.type = REGION_EPM;
 
     encl->utm.pmp_rid = shared_region;
@@ -628,7 +736,7 @@ enclave_ret_code create_enclave(struct keystone_sbi_create create_args)
     performance_stats_init(&encl->stats.host_execution);
 
     ipi_release_lock(&encl_lock);
-
+// printm("## M mode ## %s succeed\n", __FILE__);
     return ENCLAVE_SUCCESS;
 
 free_platform:
@@ -670,8 +778,11 @@ static uintptr_t remove_region(struct region* region, int dry){
     }
     if(!dry){
         region_perm_config_reset(&region->perm_conf);
-        pmp_unset_global(rid);
-        pmp_region_free_atomic(rid);
+        if (pmp_is_physical(rid)) { // free region when it is physical
+            printm("@@@@@@@@@@rid:%d is physicial!\n\n", rid);
+            pmp_unset_global(rid);
+            pmp_region_free_atomic(rid);
+        }
     }
 
     return affected_enclaves;
@@ -737,10 +848,17 @@ enclave_ret_code destroy_enclave(enclave_id eid, struct enclave_shm_list* shm_li
     /*terminate_enclaves(terminate_mask);*/
 
     // 2. free pmp region for UTM
-    pmp_unset_global(encl->epm.pmp_rid);
-    pmp_region_free_atomic(encl->epm.pmp_rid);
-    pmp_unset_global(encl->utm.pmp_rid);
-    pmp_region_free_atomic(encl->utm.pmp_rid);
+
+
+    if (pmp_is_physical(encl->epm.pmp_rid)) {
+        pmp_unset_global(encl->epm.pmp_rid);
+        pmp_region_free_atomic(encl->epm.pmp_rid);
+    }
+    
+    if (pmp_is_physical(encl->utm.pmp_rid)) {
+        pmp_unset_global(encl->utm.pmp_rid);
+        pmp_region_free_atomic(encl->utm.pmp_rid);   
+    }
 
     encl->encl_satp = 0;
     encl->n_thread = 0;
@@ -809,7 +927,8 @@ enclave_ret_code exit_enclave(uintptr_t* encl_regs, unsigned long retval, uintpt
     if(!exitable)
         return ENCLAVE_NOT_RUNNING;
 
-    context_switch_to_host(encl_regs, encl, 0);
+    // printm(">>> exit <<<");
+    context_switch_to_host(encl_regs, encl, 3); // in condition 3, we free the pmp.
 
     return ENCLAVE_SUCCESS;
 }
@@ -873,6 +992,7 @@ enclave_ret_code _elasticlave_create(struct enclave* encl, uintptr_t paddr,
         uintptr_t size){
     enclave_ret_code ret = ENCLAVE_SUCCESS;
     int region;
+    printm("## M-mode ## elastic: %s %s %llx\n", __FILE__, __func__, paddr);
     ret = pmp_region_init_atomic(paddr, size, PMP_PRI_ANY, &region, 0);
     if(ret)
         goto elasticlave_create_clean;
@@ -1318,3 +1438,50 @@ int install_regev_notify(uintptr_t ptr){
     return 0;
 }
 
+#define EPM1_BASE 0x00000000be000000
+#define EPM2_BASE 0x00000000c1a00000
+#define EPM_SIZE 0x381b000
+
+/* TODO:
+    atomic 
+*/
+static int high_pmp_rid = 0; // high priority pmp to unlock and lock encl mem
+
+/* TODO:
+    Multiclave:
+    
+    */
+enclave_ret_code enclave_tmp_pmp_unlock(uintptr_t epm_id, uintptr_t arg1, uintptr_t arg2) {
+
+    printm("\n\t[%s] eid:%d\n", __func__, epm_id);
+
+    int ret = pmp_region_init_atomic(arg1, arg2, PMP_PRI_HIGH, &high_pmp_rid, 1);
+    if (high_pmp_rid <= 0)
+        die("high pmp idx error die\n\n");
+    pmp_set(high_pmp_rid, PMP_ALL_PERM);
+
+    
+    printm("epm_id %d, high_pmp_rid %d unlocked\n", epm_id, high_pmp_rid);
+    if(epm_id >= 32)
+        die("bad epm id!!\n\n");
+
+    return ENCLAVE_SUCCESS;
+bad_unlock:
+    die("Fatal PMP Unlock Error\n\n\n\n");
+    return ENCLAVE_PMP_FAILURE;
+}
+
+enclave_ret_code enclave_tmp_pmp_lock(uintptr_t epm_id, uintptr_t arg1, uintptr_t arg2) {
+    if(high_pmp_rid) {
+        printm("\n\t in lock, high:%d\n\n", high_pmp_rid);
+        tmp_pmp_region_free_atomic(high_pmp_rid); //dont clean reg bitmap.  0x0110
+        high_pmp_rid = 0; // actually, this should be atomical.
+    }
+    return ENCLAVE_SUCCESS;
+}
+
+enclave_ret_code enclave_tmp_pmp_expand(uintptr_t epm_id, uintptr_t arg1, uintptr_t arg2) {
+    die("enclave.c last func");
+    pmp_expand(10/*get_region_by_uid(5)*/, 0, 0);
+    return ENCLAVE_SUCCESS;
+}

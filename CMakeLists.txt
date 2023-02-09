@@ -12,10 +12,8 @@ if(NOT DEFINED platform)
 endif()
 message(STATUS "platform=${platform}")
 
-if(Debug)
-  message(STATUS "debug")
-  set(CFLAGS -g)
-endif()
+message(STATUS "debug")
+set(CFLAGS -g)
 
 if(RISCV32)
   message(STATUS "riscv32")

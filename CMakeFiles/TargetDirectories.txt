@@ -1,0 +1,16 @@
+/home/zzp/keystone/elasticlave/CMakeFiles/rebuild_cache.dir
+/home/zzp/keystone/elasticlave/CMakeFiles/edit_cache.dir
+/home/zzp/keystone/elasticlave/CMakeFiles/run-tests.dir
+/home/zzp/keystone/elasticlave/CMakeFiles/qemu.dir
+/home/zzp/keystone/elasticlave/CMakeFiles/qemu-pmp-bug.patch.dir
+/home/zzp/keystone/elasticlave/CMakeFiles/qemu-secure-boot.patch.dir
+/home/zzp/keystone/elasticlave/CMakeFiles/buildroot.dir
+/home/zzp/keystone/elasticlave/CMakeFiles/sm.dir
+/home/zzp/keystone/elasticlave/CMakeFiles/linux.dir
+/home/zzp/keystone/elasticlave/CMakeFiles/image.dir
+/home/zzp/keystone/elasticlave/CMakeFiles/bootrom.dir
+/home/zzp/keystone/elasticlave/CMakeFiles/linux64.patch.dir
+/home/zzp/keystone/elasticlave/CMakeFiles/driver-sync.dir
+/home/zzp/keystone/elasticlave/CMakeFiles/driver.dir
+/home/zzp/keystone/elasticlave/CMakeFiles/tests.dir
+/home/zzp/keystone/elasticlave/CMakeFiles/tools.dir

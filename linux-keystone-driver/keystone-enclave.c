@@ -29,6 +29,12 @@ unsigned long calculate_required_pages(
   // FIXME: calculate the required number of pages for the page table.
   // For now, we must allocate at least 1 (top) + 2 (enclave) + 2 (runtime) pages for pg tables
   req_pages += 15;
+
+  /*zzp TODO:
+  add 5 pages as backup 
+  */
+  // req_pages += 5;
+ 
   return req_pages;
 }
 
@@ -65,13 +71,14 @@ struct enclave* create_enclave(unsigned long min_pages)
     keystone_err("failed to allocate enclave struct\n");
     goto error_no_free;
   }
-
+  // pr_info("%s:%d vaddr: %lx, paddr %lx, size: %d\n", __func__, __LINE__, enclave, __pa(enclave), sizeof(struct enclave));
   enclave->recent_shm = NULL;
 
   enclave->utm = NULL;
   enclave->close_on_pexit = 1;
 
   enclave->epm = kmalloc(sizeof(struct epm), GFP_KERNEL);
+
   enclave->request.type = DR_REQUEST_NONE;
   enclave->is_init = true;
   enclave->epm_mapped = false;
@@ -81,10 +88,12 @@ struct enclave* create_enclave(unsigned long min_pages)
     goto error_destroy_enclave;
   }
 
-  if(epm_init(enclave->epm, min_pages)) {
+  if(epm_init(enclave->epm, min_pages + 5)) { // TODO: add 5 pages for backup 
     keystone_err("failed to initialize epm\n");
     goto error_destroy_enclave;
   }
+  // pr_info("%s %s:%d epm init succeed,\n epm paddr %llx eid:%d\n", __FILE__, __func__, __LINE__, enclave->epm->pa, enclave->eid);
+
   return enclave;
 
  error_destroy_enclave:

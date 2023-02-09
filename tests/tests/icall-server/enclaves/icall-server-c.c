@@ -56,6 +56,10 @@ static void icall_work_buffer(){
 
 int main(){
 	server_eid = ocall_get_server_eid();
+  fprintf(stderr,"Hello2 \n\n\n");
+  printf("[%s]:%s:%d eid: %d \n\n",__FILE__, __func__, __LINE__, server_eid);
+  fflush(stdout);
+
 	icall_connect((uintptr_t)server_eid);
 
   record_size = ocall_get_record_size();
@@ -92,6 +96,8 @@ int main(){
 	icall_quit();
 
   printf("Client about to exit!\n");
+  fflush(stdout);
+
   _exit(0);
 
   return 0;

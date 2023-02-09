@@ -304,3 +304,18 @@ uintptr_t mcall_sm_not_implemented(uintptr_t* encl_regs, unsigned long cause)
 
 	return exit_enclave(encl_regs, (uint64_t)-1UL, 0, cpu_get_enclave_id());
 }
+
+uintptr_t mcall_multiclave_pmp_unlock(uintptr_t epm_id, uintptr_t arg1, uintptr_t arg2) {
+	enclave_ret_code ret = enclave_tmp_pmp_unlock(epm_id, arg1, arg2);
+	return ret;
+}
+
+uintptr_t mcall_multiclave_pmp_lock(uintptr_t epm_id, uintptr_t arg1, uintptr_t arg2) {
+	enclave_ret_code ret = enclave_tmp_pmp_lock(epm_id, arg1, arg2);
+	return ret;
+}
+
+uintptr_t mcall_multiclave_pmp_expand(uintptr_t epm_id, uintptr_t arg1, uintptr_t arg2) {
+	enclave_ret_code ret = enclave_tmp_pmp_unlock(epm_id, arg1, arg2);
+	return ret;
+}

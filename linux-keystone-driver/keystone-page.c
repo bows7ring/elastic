@@ -26,9 +26,20 @@ int epm_destroy(struct epm* epm) {
   return 0;
 }
 
+
+static int epm_id = 0;
+
 /* Create an EPM and initialize the free list */
 int epm_init(struct epm* epm, unsigned int min_pages)
 {
+  epm_id++;
+  // pr_err("epm_id:%d epm_init 1111111\n\n", epm_id);
+  // pr_err("device addr %lx\n\n",keystone_dev.this_device);
+  /* args: */
+  // if(epm_id == 1)
+    // SBI_CALL_3(SBI_SM_MULTICLAVE_ECALL_PMP_UNLOCK, epm_id, 0, 0);
+  // pr_err("epm_init 22222222\n\n");
+
   vaddr_t epm_vaddr = 0;
   unsigned long order = 0;
   unsigned long count = min_pages;
@@ -42,12 +53,17 @@ int epm_init(struct epm* epm, unsigned int min_pages)
   /* prevent kernel from complaining about an invalid argument */
   if (order <= MAX_ORDER)
     epm_vaddr = (vaddr_t) __get_free_pages(GFP_HIGHUSER, order);
+  if(epm_vaddr)
+    pr_info("[%s] %s:%d ## Buddy Mem Alloc ## :epm_vaddr: %lx minpages: %d\n", __FILE__, __func__, __LINE__, epm_vaddr, min_pages);
+    
 
 #ifdef CONFIG_CMA
   /* If buddy allocator fails, we fall back to the CMA */
   if (!epm_vaddr) {
     epm->is_cma = 1;
     count = min_pages;
+
+  // pr_err("epm_init 33333\n\n");
 
     epm_vaddr = (vaddr_t) dma_alloc_coherent(keystone_dev.this_device,
       count << PAGE_SHIFT,
@@ -56,6 +72,7 @@ int epm_init(struct epm* epm, unsigned int min_pages)
 
     if(!device_phys_addr)
       epm_vaddr = 0;
+    // pr_err("[%s] %s:%d ## Dma Mem Alloc ## :device:%llx, epm_vaddr: %lx paddr:%lx minpages: %d\n", __FILE__, __func__, __LINE__, device_phys_addr, epm_vaddr, __pa(epm_vaddr), min_pages);
   }
 #endif
 
@@ -72,6 +89,12 @@ int epm_init(struct epm* epm, unsigned int min_pages)
   epm->order = order;
   epm->size = count << PAGE_SHIFT;
   epm->ptr = epm_vaddr;
+
+
+/* args reserved */
+  SBI_CALL_3(SBI_SM_MULTICLAVE_ECALL_PMP_LOCK, epm_id, 0, 0);
+  
+  // pr_err(" epm_init finished!!\n\n");
 
   return 0;
 }

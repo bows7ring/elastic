@@ -1,7 +1,7 @@
 .PHONY: all build clean
 
 
-RECORD_SIZE:=512 1024 2048 4096 8192 16384 32768 65536
+RECORD_SIZE:=512
 TEST_NAME:=icall-server
 
 build/$(TEST_NAME).sh: build 

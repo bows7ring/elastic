@@ -142,8 +142,8 @@ eyrie_boot(uintptr_t enclave_id, // $a0 contains the return value from the SBI
   kernel_offset = runtime_va_start - runtime_paddr;
   uintptr_t sepc = csr_read(sepc);
   printf("Enclave ID = %lx\n", enclave_id);
-  printf("EAPP entry = %lx", sepc);
-  printf("DRAM = %lx, %lx, UTM = %lx, %lx\n", dram_base, dram_size, utm_vaddr, utm_size);
+  printf("EAPP entry = %lx ", sepc);
+  //printf("DRAM = %lx, %lx, UTM = %lx, %lx\n", dram_base, dram_size, utm_vaddr, utm_size);
   //printf("User Paddr = %lx, Runtime Paddr = %lx\n, Runtime va start = %lx\n", user_paddr, runtime_paddr, runtime_va_start);
 
   debug("UTM : 0x%lx-0x%lx (%u KB)", utm_vaddr, utm_vaddr+utm_size, utm_size/1024);
@@ -166,16 +166,16 @@ eyrie_boot(uintptr_t enclave_id, // $a0 contains the return value from the SBI
 
   /* copy valid entries from the old page table */
   copy_root_page_table();
-  printf("copy root page table done!\n");
+  //printf("copy root page table done!\n");
 
   /* initialize free memory */
   init_freemem();
-  printf("init_freemem done!\n");
+  //printf("init_freemem done!\n");
 
   //TODO: This should be set by walking the userspace vm and finding
   //highest used addr. Instead we start partway through the anon space
   set_program_break(EYRIE_ANON_REGION_START + (1024 * 1024 * 1024));
-  printf("set_program_break done!\n");
+  //printf("set_program_break done!\n");
 
   #ifdef USE_PAGING
   init_paging(user_paddr, free_paddr);
@@ -185,7 +185,7 @@ eyrie_boot(uintptr_t enclave_id, // $a0 contains the return value from the SBI
   /* initialize user stack */
   init_user_stack_and_env();
 
-  printf("init_user_stack_and_env done!\n");
+  //printf("init_user_stack_and_env done!\n");
   /* set trap vector */
   csr_write(stvec, &encl_trap_handler);
 
@@ -205,7 +205,7 @@ eyrie_boot(uintptr_t enclave_id, // $a0 contains the return value from the SBI
 
   rt_page_fault_init();
 
-  printf("Drop to user land\n");
+  printf("eyrie boot finished. Drop to user land...\n");
   debug("eyrie boot finished. drop to the user land ...");
   //printf("FREE: 0x%lx-0x%lx (%u KB), va 0x%lx", free_paddr, dram_base + dram_size, freemem_size/1024, freemem_va_start);
 

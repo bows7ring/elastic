@@ -372,7 +372,6 @@ bool Keystone::prepareEnclave(struct keystone_ioctl_create_enclave* enclp,
     else{
         starting_phys_range = enclp->pt_ptr;
     }
-
     pMemory->init(fd, starting_phys_range);
     eid = enclp->eid;
     start_addr = starting_phys_range;
@@ -488,7 +487,8 @@ keystone_status_t Keystone::init(const char *eapppath, const char *runtimepath, 
         // SM: set up PMP, doing measurement
         // is_init of enclave is set to false (which will change the semantics of mmap)
         ret = ioctl(fd, KEYSTONE_IOC_FINALIZE_ENCLAVE, &enclp);
-
+        printf("%s %s %d:ioc finalize success ret val: %d\n", __FILE__, __func__, __LINE__, ret);
+        fflush(stdout);
         if (ret) {
             ERROR("failed to finalize enclave - ioctl() failed: %d", ret);
             destroy();
@@ -573,7 +573,7 @@ void Keystone::process_new_memory_region(uintptr_t size){
 
 keystone_status_t Keystone::runOnce(int* ret_code){
     int ret;
-
+    // perror("in RunOnce\n\n");
     if(state == ENCLAVE_STATE_INITIALISED){
         run_args.eid = eid;
         run_args.dr_request_resp0 = 0;
@@ -651,6 +651,7 @@ keystone_status_t Keystone::runOnce(int* ret_code){
 
 keystone_status_t Keystone::run()
 {
+    // perror("in keystone run\n\n");
     int ret;
     if (params.isSimulated()) {
         return KEYSTONE_SUCCESS;

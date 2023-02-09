@@ -254,6 +254,12 @@ send_ipi:
     case SBI_SM_NOT_IMPLEMENTED:
       retval = mcall_sm_not_implemented(regs, arg0);
       break;
+  case SBI_SM_MULTICLAVE_ECALL_PMP_UNLOCK:
+      retval = mcall_multiclave_pmp_unlock(arg0, arg1, arg2);
+      break;
+  case SBI_SM_MULTICLAVE_ECALL_PMP_LOCK:
+      retval = mcall_multiclave_pmp_lock(arg0, arg1, arg2);
+      break; 
 #endif
     default:
       retval = -ENOSYS;
@@ -264,6 +270,7 @@ send_ipi:
 
 mcall_trap_exit:
   try_terminate_enclave(regs);
+  // printm("## M mode ## mcall_trap EXIT\n");
 }
 
 void redirect_trap(uintptr_t epc, uintptr_t mstatus, uintptr_t badaddr)

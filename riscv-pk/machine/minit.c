@@ -194,15 +194,17 @@ void enter_supervisor_mode(void (*fn)(uintptr_t), uintptr_t arg0, uintptr_t arg1
 	uintptr_t mstatus = read_csr(mstatus);
   mstatus = INSERT_FIELD(mstatus, MSTATUS_MPP, PRV_S);
   mstatus = INSERT_FIELD(mstatus, MSTATUS_MPIE, 0);
-  write_csr(mstatus, mstatus);
-  write_csr(mscratch, MACHINE_STACK_TOP() - MENTRY_FRAME_SIZE);
-  write_csr(mepc, fn);
+
 
 #ifdef SM_ENABLED
 	printm("initializing sm\r\n");
 	sm_init();
 	printm("initialized sm\r\n");
 #endif
+  write_csr(mstatus, mstatus);
+  write_csr(mscratch, MACHINE_STACK_TOP() - MENTRY_FRAME_SIZE);
+  write_csr(mepc, fn);
+  printm("mepc of `minit` set!\n\n");
   register uintptr_t a0 asm ("a0") = arg0;
   register uintptr_t a1 asm ("a1") = arg1;
 	asm volatile ("mret" : : "r" (a0), "r" (a1));

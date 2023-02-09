@@ -231,4 +231,13 @@ static inline enclave_id encl_eid(struct enclave* encl){
 }
 
 int install_regev_notify(uintptr_t ptr);
+
+
+/*TODO:
+  Multiclave:
+  */
+enclave_ret_code enclave_tmp_pmp_unlock(uintptr_t epm_id, uintptr_t arg1, uintptr_t arg2);
+enclave_ret_code enclave_tmp_pmp_lock(uintptr_t epm_id, uintptr_t arg1, uintptr_t arg2);
+enclave_ret_code enclave_tmp_pmp_expand(uintptr_t epm_id, uintptr_t arg1, uintptr_t arg2);
+
 #endif

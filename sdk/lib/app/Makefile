@@ -6,7 +6,7 @@ AR = riscv64-unknown-elf-ar
 ARFLAGS = rcs
 
 OPTIONS_FLAGS ?=
-CFLAGS = -fPIE -Wall $(OPTIONS_FLAGS) -fno-plt
+CFLAGS = -fPIE -Wall $(OPTIONS_FLAGS) -fno-plt 
 
 ASM_SRCS = $(wildcard src/*.s) $(wildcard src/*.S)
 C_SRCS = $(wildcard src/*.c)

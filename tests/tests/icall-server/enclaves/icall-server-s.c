@@ -102,7 +102,10 @@ static int quit_handler(int eid, void* buffer, struct shared_region* shared_regi
 //void EAPP_ENTRY eapp_entry(uintptr_t eid){
 int main(){
   record_size = ocall_get_record_size();
+  printf("\n\t ******server init*********\n\n");
+  fflush(stdout);
 
+  // for(int i=0; i<10000000;i++);
 	icall_server_init();
 
 	icall_server_register_handler(ICALL_QUIT, quit_handler);
@@ -118,6 +121,7 @@ int main(){
 	icall_server_launch_async();
 
   printf("Server about to exit!\n");
+  fflush(stdout);
 
 
   _exit(0);

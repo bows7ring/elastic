@@ -46,4 +46,8 @@ uintptr_t mcall_sm_elasticlave_install_regev(uintptr_t regev_notify);
 
 uintptr_t mcall_sm_call_plugin(uintptr_t plugin_id, uintptr_t call_id, uintptr_t arg0, uintptr_t arg1);
 
+uintptr_t mcall_multiclave_pmp_unlock(uintptr_t arg0, uintptr_t arg1, uintptr_t arg2);
+uintptr_t mcall_multiclave_pmp_lock(uintptr_t arg0, uintptr_t arg1, uintptr_t arg2);
+uintptr_t mcall_multiclave_expand(uintptr_t arg0, uintptr_t arg1, uintptr_t arg2);
+
 #endif

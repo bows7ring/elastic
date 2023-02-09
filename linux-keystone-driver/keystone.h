@@ -48,6 +48,11 @@ extern struct list_head shm_list;
 #define SBI_SM_ELASTICLAVE_DESTROY		 121
 #define SBI_SM_ELASTICLAVE_REGION_EVENTS 122
 
+// Multiclave Ecall
+#define SBI_SM_MULTICLAVE_ECALL_PMP_UNLOCK 130
+#define SBI_SM_MULTICLAVE_ECALL_PMP_LOCK 131
+#define SBI_SM_MULTICLAVE_ECALL_PMP_LOCK 132
+
 			
 // requests from the SM
 #define SBI_SM_REQUEST_ARGS_LIM 8

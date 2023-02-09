@@ -1,0 +1,836 @@
+---- Running QEMU SSH on port 3000 ****
+bbl loader
+
+                SIFIVE, INC.
+
+         5555555555555555555555555
+        5555                   5555
+       5555                     5555
+      5555                       5555
+     5555       5555555555555555555555
+    5555       555555555555555555555555
+   5555                             5555
+  5555                               5555
+ 5555                                 5555
+5555555555555555555555555555          55555
+ 55555           555555555           55555
+   55555           55555           55555
+     55555           5           55555
+       55555                   55555
+         55555               55555
+           55555           55555
+             55555       55555
+               55555   55555
+                 555555555
+                   55555
+                     5
+
+           SiFive RISC-V Core IP
+[ZZP_bbl] entrypoint is 0000000080200000 
+initializing sm
+
+NAPOT,0000000080000000+0000000000200000 pri[1]
+def bit map: 00000001 reg bit map: 00006006
+sm_region_id:   0
+
+NAPOT,0000000000000000+ffffffffffffffff pri[2]
+def bit map: 00000003 reg bit map: 00006006
+os_region_id:   1
+
+TOR,00000000be000000+0000000020000000 pri[4]
+def bit map: 00000007 reg bit map: 00006006
+Blocked_region_id: 2
+All the pre-set pmps succeed.
+
+initialized sm
+mepc of `minit` set!
+
+[    0.000000] OF: fdt: >> ZZP-Linux-DBG << Ignoring memory range 0x80000000 - 0x80200000
+[    0.000000] Linux version 5.3.0-dirty (root@7fc1a74c0e4c) (gcc version 7.2.0 (GCC)) #573 SMP Tue Apr 19 22:37:18 +08 2022
+[    0.000000] initrd not found or empty - disabling initrd
+[    0.000000] Zone ranges:
+[    0.000000]   DMA32    [mem 0x0000000080200000-0x00000000ffffffff]
+[    0.000000]   Normal   empty
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000080200000-0x00000000ffffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000080200000-0x00000000ffffffff]
+[    0.000000] cma: Reserved 1024 MiB at 0x00000000be000000
+[    0.000000] software IO TLB: mapped [mem 0xba000000-0xbe000000] (64MB)
+[    0.000000] elf_hwcap is 0x112d
+[    0.000000] percpu: Embedded 18 pages/cpu s34584 r8192 d30952 u73728
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 516615
+[    0.000000] Kernel command line: console=ttyS0 ro root=/dev/vda
+[    0.000000] Dentry cache hash table entries: 262144 (order: 9, 2097152 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 131072 (order: 8, 1048576 bytes, linear)
+[    0.000000] Sorting __ex_table...
+[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+[    0.000000] Memory: 939904K/2095104K available (6040K kernel code, 384K rwdata, 1885K rodata, 217K init, 307K bss, 106624K reserved, 1048576K cma-reserved)
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+[    0.000000] rcu: Hierarchical RCU implementation.
+[    0.000000] rcu: 	RCU restricting CPUs from NR_CPUS=8 to nr_cpu_ids=1.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.
+[    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=1
+[    0.000000] NR_IRQS: 0, nr_irqs: 0, preallocated irqs: 0
+[    0.000000] plic: mapped 53 interrupts with 1 handlers for 2 contexts.
+[    0.000000] riscv_timer_init_dt: Registering clocksource cpuid [0] hartid [0]
+[    0.000000] clocksource: riscv_clocksource: mask: 0xffffffffffffffff max_cycles: 0x24e6a1710, max_idle_ns: 440795202120 ns
+[    0.000136] sched_clock: 64 bits at 10MHz, resolution 100ns, wraps every 4398046511100ns
+[    0.004074] Console: colour dummy device 80x25
+[    0.005264] Calibrating delay loop (skipped), value calculated using timer frequency.. 20.00 BogoMIPS (lpj=40000)
+[    0.005478] pid_max: default: 32768 minimum: 301
+[    0.010043] Mount-cache hash table entries: 4096 (order: 3, 32768 bytes, linear)
+[    0.010128] Mountpoint-cache hash table entries: 4096 (order: 3, 32768 bytes, linear)
+[    0.030712] rcu: Hierarchical SRCU implementation.
+[    0.032860] smp: Bringing up secondary CPUs ...
+[    0.032948] smp: Brought up 1 node, 1 CPU
+[    0.057183] devtmpfs: initialized
+[    0.061940] random: get_random_u32 called from bucket_table_alloc.isra.26+0x4e/0x15c with crng_init=0
+[    0.063854] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
+[    0.063999] futex hash table entries: 256 (order: 2, 16384 bytes, linear)
+[    0.072029] NET: Registered protocol family 16
+[    0.108029] vgaarb: loaded
+[    0.108830] SCSI subsystem initialized
+[    0.110622] usbcore: registered new interface driver usbfs
+[    0.110878] usbcore: registered new interface driver hub
+[    0.111065] usbcore: registered new device driver usb
+[    0.124395] clocksource: Switched to clocksource riscv_clocksource
+[    0.144620] NET: Registered protocol family 2
+[    0.147236] tcp_listen_portaddr_hash hash table entries: 1024 (order: 2, 16384 bytes, linear)
+[    0.147356] TCP established hash table entries: 16384 (order: 5, 131072 bytes, linear)
+[    0.147596] TCP bind hash table entries: 16384 (order: 6, 262144 bytes, linear)
+[    0.148127] TCP: Hash tables configured (established 16384 bind 16384)
+[    0.149352] UDP hash table entries: 1024 (order: 3, 32768 bytes, linear)
+[    0.149902] UDP-Lite hash table entries: 1024 (order: 3, 32768 bytes, linear)
+[    0.150861] NET: Registered protocol family 1
+[    0.153858] RPC: Registered named UNIX socket transport module.
+[    0.153915] RPC: Registered udp transport module.
+[    0.153949] RPC: Registered tcp transport module.
+[    0.153977] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    0.154061] PCI: CLS 0 bytes, default 64
+[    0.159955] workingset: timestamp_bits=62 max_order=19 bucket_order=0
+[    0.167979] NFS: Registering the id_resolver key type
+[    0.168721] Key type id_resolver registered
+[    0.168770] Key type id_legacy registered
+[    0.168875] nfs4filelayout_init: NFSv4 File Layout Driver Registering...
+[    0.169473] 9p: Installing v9fs 9p2000 file system support
+[    0.170287] NET: Registered protocol family 38
+[    0.170493] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 253)
+[    0.170609] io scheduler mq-deadline registered
+[    0.170690] io scheduler kyber registered
+[    0.172351] pci-host-generic 30000000.pci: host bridge /soc/pci@30000000 ranges:
+[    0.172715] pci-host-generic 30000000.pci:    IO 0x03000000..0x0300ffff -> 0x00000000
+[    0.172983] pci-host-generic 30000000.pci:   MEM 0x40000000..0x7fffffff -> 0x40000000
+[    0.174562] pci-host-generic 30000000.pci: ECAM at [mem 0x30000000-0x3fffffff] for [bus 00-ff]
+[    0.175179] pci-host-generic 30000000.pci: PCI host bridge to bus 0000:00
+[    0.175302] pci_bus 0000:00: root bus resource [bus 00-ff]
+[    0.175389] pci_bus 0000:00: root bus resource [io  0x0000-0xffff]
+[    0.175422] pci_bus 0000:00: root bus resource [mem 0x40000000-0x7fffffff]
+[    0.176493] pci 0000:00:00.0: [1b36:0008] type 00 class 0x060000
+[    0.276636] Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
+[    0.282106] printk: console [ttyS0] disabled
+[    0.282714] 10000000.uart: ttyS0 at MMIO 0x10000000 (irq = 10, base_baud = 230400) is a 16550A
+[    0.303296] printk: console [ttyS0] enabled
+[    0.306963] [drm] radeon kernel modesetting enabled.
+[    0.326385] loop: module loaded
+[    0.333760] virtio_blk virtio0: [vda] 122880 512-byte logical blocks (62.9 MB/60.0 MiB)
+[    0.354595] libphy: Fixed MDIO Bus: probed
+[    0.358900] e1000e: Intel(R) PRO/1000 Network Driver - 3.2.6-k
+[    0.359282] e1000e: Copyright(c) 1999 - 2015 Intel Corporation.
+[    0.360427] ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+[    0.360816] ehci-pci: EHCI PCI platform driver
+[    0.361218] ehci-platform: EHCI generic platform driver
+[    0.361641] ohci_hcd: USB 1.1 'Open' Host Controller (OHCI) Driver
+[    0.361878] ohci-pci: OHCI PCI platform driver
+[    0.362238] ohci-platform: OHCI generic platform driver
+[    0.363044] usbcore: registered new interface driver uas
+[    0.363573] usbcore: registered new interface driver usb-storage
+[    0.367624] mousedev: PS/2 mouse device common for all mice
+[    0.371205] usbcore: registered new interface driver usbhid
+[    0.371483] usbhid: USB HID core driver
+[    0.375464] NET: Registered protocol family 10
+[    0.391699] Segment Routing with IPv6
+[    0.393487] sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
+[    0.399449] NET: Registered protocol family 17
+[    0.403670] 9pnet: Installing 9P2000 support
+[    0.404871] Key type dns_resolver registered
+[    0.443461] EXT4-fs (vda): mounting ext2 file system using the ext4 subsystem
+[    0.456039] EXT4-fs (vda): mounted filesystem without journal. Opts: (null)
+[    0.457313] VFS: Mounted root (ext2 filesystem) readonly on device 254:0.
+[    0.463223] devtmpfs: mounted
+[    0.495411] Freeing unused kernel memory: 216K
+[    0.495896] This architecture does not have kernel memory protection.
+[    0.496950] Run /sbin/init as init process
+[    0.853241] EXT4-fs (vda): re-mounted. Opts: (null)
+Starting syslogd: OK
+Starting klogd: OK
+Running sysctl: OK
+Initializing random number generator... [    1.430647] random: dd: uninitialized urandom read (512 bytes read)
+done.
+Starting network: udhcpc: started, v1.31.0
+udhcpc: sending discover
+udhcpc: sending select for 192.168.100.128
+udhcpc: lease of 192.168.100.128 obtained, lease time 86400
+deleting routers
+adding dns 192.168.100.3
+OK
+Starting dropbear sshd: [    1.867131] random: dropbear: uninitialized urandom read (32 bytes read)
+OK
+
+Welcome to Buildroot
+buildroot login: root
+Password: 
+# 
+# insm# insmod [Jk# insmod keystone-driver.ko [J
+[   70.169901] keystone_driver: loading out-of-tree module taints kernel.
+[   70.174999] keystone_enclave: keystone enclave v0.2
+# ./p# ./prototype.sh [J
+Verifying archive integrity...[   79.430310] random: fast init done
+ All good.
+Uncompressing Micro-benchmark prototype
+[   82.899705] epm_id:1 epm_init 1111111
+[   82.899705] 
+[   82.900609] device addr ffffffe00001e000
+[   82.900609] 
+[   82.901167] epm_init 22222222
+[   82.901167] 
+[   82.901362] epm_init 33333
+[   82.901362] 
+[   82.901532] 
+[   82.901532] 	 [DBG] dma alloc trace:
+[   82.901532] 
+[   82.901787] 
+[   82.901787] 
+[   82.901787] 
+[   82.901787] dma alloc attrs trace
+[   82.901787] 
+[   82.901787] 
+[   82.902252] 
+[   82.902252] 
+[   82.902252] trace dma_alloc_from_dev_coherent
+[   82.902252] 
+[   82.902644] dev mem: 0, dma handle: 0
+[   82.902644] 
+[   82.902946] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc:256
+[   82.902946]   dma: 0, dev: ffffffe039139800
+[   82.903387] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc_pages:170
+[   82.903387]   dma: 0, dev: ffffffe0391395d0
+[   82.903923] [ find dma ]/keystone/linux/kernel/dma/direct.c:__dma_direct_alloc_pages:116
+[   82.903923]   dma: 0, node: -1
+[   82.934510] [ find dma ]/keystone/linux/kernel/dma/direct.c:__dma_direct_alloc_pages:127
+[   82.934510]   dma: 0, page: be000000, size:3300000
+
+	[enclave_tmp_pmp_unlock] eid:1
+
+TOR,00000000be000000+0000000003300000 pri[3]
+def bit map: 0000000f reg bit map: 00006006
+epm_id 1, high_pmp_rid 3 unlocked
+[   82.936960] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc_pages:176
+[   82.936960]   dma: 0, page: 0
+[   83.096900] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc_pages:212
+[   83.096900]   dma: be000000, page: be000000
+[   83.099005] dma_alloc_attrs:287 ,dma addr be000000, ffffffe03de00000
+[   83.099365] dma_alloc_attrs:295 ,dma addr be000000, ffffffe03de00000
+[   83.099655] trace into debug_dma_alloc_coherent empty func
+[   83.099655] 
+[   83.099655] 
+[   83.099655] dma handle:be000000
+[   83.099655] 
+[   83.100737] [/keystone/build/linux-keystone-driver.build/keystone-page.c] epm_init:75 ## Dma Mem Alloc ## :device:be000000, epm_vaddr: ffffffe03de00000 paddr:be000000 minpages: 13056
+
+	 in lock, high:3
+
+free tmp reg bit map: 00006006
+[   83.135340] 44444444 epm_init finished!!
+[   83.135340] 
+[   83.135752] /keystone/build/linux-keystone-driver.build/keystone-enclave.c create_enclave:89 epm init succeed,
+[   83.135752]  epm paddr be000000 eid:956962688
+[   83.165761] in finalize
+Runtime = 00000000be080000, user = 00000000be2a1000, free = 00000000be304000
+
+TOR,00000000be000000+0000000003300000 pri[0]
+def bit map: 0000001f epm region {4}
+
+NAPOT,00000000b8a00000+0000000000200000 pri[0]
+def bit map: 0000003f reg bit map: 00006006
+utm region {5}
+src/keystone.cpp init 490:ioc finalize success ret val: 0
+SDK: encl 1 init done!
+
+[   83.167665] [/keystone/build/linux-keystone-driver.build/keystone-ioctl.c]:keystone_finalize_enclave:133, epm be000000
+[   86.733339] epm_id:2 epm_init 1111111
+[   86.733339] 
+[   86.734041] device addr ffffffe00001e000
+[   86.734041] 
+[   86.734275] epm_init 22222222
+[   86.734275] 
+[   86.734452] epm_init 33333
+[   86.734452] 
+[   86.734686] 
+[   86.734686] 	 [DBG] dma alloc trace:
+[   86.734686] 
+[   86.734934] 
+[   86.734934] 
+[   86.734934] 
+[   86.734934] dma alloc attrs trace
+[   86.734934] 
+[   86.734934] 
+[   86.735320] 
+[   86.735320] 
+[   86.735320] trace dma_alloc_from_dev_coherent
+[   86.735320] 
+[   86.735830] dev mem: 0, dma handle: 0
+[   86.735830] 
+[   86.737249] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc:256
+[   86.737249]   dma: 0, dev: ffffffe039139800
+[   86.737971] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc_pages:170
+[   86.737971]   dma: 0, dev: ffffffe0391395d0
+[   86.739015] [ find dma ]/keystone/linux/kernel/dma/direct.c:__dma_direct_alloc_pages:116
+[   86.739015]   dma: 0, node: -1
+[   86.751511] [ find dma ]/keystone/linux/kernel/dma/direct.c:__dma_direct_alloc_pages:127
+[   86.751511]   dma: 0, page: c1400000, size:3300000
+
+	[enclave_tmp_pmp_unlock] eid:2
+
+TOR,00000000c1400000+0000000003300000 pri[3]
+def bit map: 0000007f reg bit map: 00006006
+epm_id 2, high_pmp_rid 6 unlocked
+[   86.752796] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc_pages:176
+[   86.752796]   dma: 0, page: 0
+[   86.848808] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc_pages:212
+[   86.848808]   dma: c1400000, page: c1400000
+[   86.849389] dma_alloc_attrs:287 ,dma addr c1400000, ffffffe041200000
+[   86.849640] dma_alloc_attrs:295 ,dma addr c1400000, ffffffe041200000
+[   86.849859] trace into debug_dma_alloc_coherent empty func
+[   86.849859] 
+[   86.849859] 
+[   86.849859] dma handle:c1400000
+[   86.849859] 
+[   86.850450] [/keystone/build/linux-keystone-driver.build/keystone-page.c] epm_init:75 ## Dma Mem Alloc ## :device:c1400000, epm_vaddr: ffffffe041200000 paddr:c1400000 minpages: 13056
+
+	 in lock, high:6
+
+free tmp reg bit map: 00006006
+[   86.861081] 44444444 epm_init finished!!
+[   86.861081] 
+[   86.861332] /keystone/build/linux-keystone-driver.build/keystone-enclave.c create_enclave:89 epm init succeed,
+[   86.861332]  epm paddr c1400000 eid:956962816
+[   86.881911] in finalize
+Runtime = 00000000c1480000, user = 00000000c16a1000, free = 00000000c1704000
+
+TOR,00000000c1400000+0000000003300000 pri[0]
+def bit map: 000000ff epm region {7}
+
+NAPOT,00000000b6000000+0000000000200000 pri[0]
+def bit map: 000001ff reg bit map: 00006006
+utm region {8}
+src/keystone.cpp init 490:ioc finalize success ret val: 0
+[   86.882129] [/keystone/build/linux-keystone-driver.build/keystone-ioctl.c]:keystone_finalize_enclave:133, epm c1400000
+[   90.444695] epm_id:3 epm_init 1111111
+[   90.444695] 
+[   90.445385] device addr ffffffe00001e000
+[   90.445385] 
+[   90.445611] epm_init 22222222
+[   90.445611] 
+[   90.445810] epm_init 33333
+[   90.445810] 
+[   90.445987] 
+[   90.445987] 	 [DBG] dma alloc trace:
+[   90.445987] 
+[   90.446219] 
+[   90.446219] 
+[   90.446219] 
+[   90.446219] dma alloc attrs trace
+[   90.446219] 
+[   90.446219] 
+[   90.446618] 
+[   90.446618] 
+[   90.446618] trace dma_alloc_from_dev_coherent
+[   90.446618] 
+[   90.446946] dev mem: 0, dma handle: 0
+[   90.446946] 
+[   90.447181] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc:256
+[   90.447181]   dma: 0, dev: ffffffe039139800
+[   90.447598] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc_pages:170
+[   90.447598]   dma: 0, dev: ffffffe0391395d0
+[   90.448352] [ find dma ]/keystone/linux/kernel/dma/direct.c:__dma_direct_alloc_pages:116
+[   90.448352]   dma: 0, node: -1
+[   90.458783] [ find dma ]/keystone/linux/kernel/dma/direct.c:__dma_direct_alloc_pages:127
+[   90.458783]   dma: 0, page: c4800000, size:3300000
+
+	[enclave_tmp_pmp_unlock] eid:3
+
+TOR,00000000c4800000+0000000003300000 pri[3]
+def bit map: 000003ff reg bit map: 00006006
+epm_id 3, high_pmp_rid 9 unlocked
+[   90.459716] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc_pages:176
+[   90.459716]   dma: 0, page: 0
+[   90.536391] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc_pages:212
+[   90.536391]   dma: c4800000, page: c4800000
+[   90.536939] dma_alloc_attrs:287 ,dma addr c4800000, ffffffe044600000
+[   90.537210] dma_alloc_attrs:295 ,dma addr c4800000, ffffffe044600000
+[   90.537429] trace into debug_dma_alloc_coherent empty func
+[   90.537429] 
+[   90.537429] 
+[   90.537429] dma handle:c4800000
+[   90.537429] 
+[   90.537959] [/keystone/build/linux-keystone-driver.build/keystone-page.c] epm_init:75 ## Dma Mem Alloc ## :device:c4800000, epm_vaddr: ffffffe044600000 paddr:c4800000 minpages: 13056
+
+	 in lock, high:9
+
+free tmp reg bit map: 00006006
+[   90.548186] 44444444 epm_init finished!!
+[   90.548186] 
+[   90.548446] /keystone/build/linux-keystone-driver.build/keystone-enclave.c create_enclave:89 epm init succeed,
+[   90.548446]  epm paddr c4800000 eid:956962944
+[   90.561114] in finalize
+Runtime = 00000000c4880000, user = 00000000c4aa1000, free = 00000000c4b04000
+
+TOR,00000000c4800000+0000000003300000 pri[0]
+def bit map: 000007ff epm region {10}
+
+NAPOT,00000000b6200000+0000000000200000 pri[0]
+def bit map: 00000fff reg bit map: 00006006
+utm region {11}
+src/keystone.cpp init 490:ioc finalize success ret val: 0
+[   90.561300] [/keystone/build/linux-keystone-driver.build/keystone-ioctl.c]:keystone_finalize_enclave:133, epm c4800000
+[   94.031413] epm_id:4 epm_init 1111111
+[   94.031413] 
+[   94.032288] device addr ffffffe00001e000
+[   94.032288] 
+[   94.032485] epm_init 22222222
+[   94.032485] 
+[   94.032659] epm_init 33333
+[   94.032659] 
+[   94.032859] 
+[   94.032859] 	 [DBG] dma alloc trace:
+[   94.032859] 
+[   94.033148] 
+[   94.033148] 
+[   94.033148] 
+[   94.033148] dma alloc attrs trace
+[   94.033148] 
+[   94.033148] 
+[   94.033491] 
+[   94.033491] 
+[   94.033491] trace dma_alloc_from_dev_coherent
+[   94.033491] 
+[   94.033798] dev mem: 0, dma handle: 0
+[   94.033798] 
+[   94.033991] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc:256
+[   94.033991]   dma: 0, dev: ffffffe039139800
+[   94.034405] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc_pages:170
+[   94.034405]   dma: 0, dev: ffffffe0391395d0
+[   94.034828] [ find dma ]/keystone/linux/kernel/dma/direct.c:__dma_direct_alloc_pages:116
+[   94.034828]   dma: 0, node: -1
+[   94.036218] [ find dma ]/keystone/linux/kernel/dma/direct.c:__dma_direct_alloc_pages:127
+[   94.036218]   dma: 0, page: c7c00000, size:3300000
+
+	[enclave_tmp_pmp_unlock] eid:4
+
+TOR,00000000c7c00000+0000000003300000 pri[3]
+def bit map: 00001fff reg bit map: 00006006
+epm_id 4, high_pmp_rid 12 unlocked
+[   94.037133] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc_pages:176
+[   94.037133]   dma: 0, page: 0
+[   94.076524] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc_pages:212
+[   94.076524]   dma: c7c00000, page: c7c00000
+[   94.077029] dma_alloc_attrs:287 ,dma addr c7c00000, ffffffe047a00000
+[   94.077310] dma_alloc_attrs:295 ,dma addr c7c00000, ffffffe047a00000
+[   94.077520] trace into debug_dma_alloc_coherent empty func
+[   94.077520] 
+[   94.077520] 
+[   94.077520] dma handle:c7c00000
+[   94.077520] 
+[   94.077976] [/keystone/build/linux-keystone-driver.build/keystone-page.c] epm_init:75 ## Dma Mem Alloc ## :device:c7c00000, epm_vaddr: ffffffe047a00000 paddr:c7c00000 minpages: 13056
+
+	 in lock, high:12
+
+free tmp reg bit map: 00006006
+[   94.090749] 44444444 epm_init finished!!
+[   94.090749] 
+[   94.091044] /keystone/build/linux-keystone-driver.build/keystone-enclave.c create_enclave:89 epm init succeed,
+[   94.091044]  epm paddr c7c00000 eid:956963072
+[   94.112739] in finalize
+Runtime = 00000000c7c80000, user = 00000000c7ea1000, free = 00000000c7f04000
+
+TOR,00000000c7c00000+0000000003300000 pri[0]
+def bit map: 00003fff epm region {13}
+
+NAPOT,00000000b5c00000+0000000000200000 pri[0]
+def bit map: 00007fff reg bit map: 00006006
+utm region {14}
+src/keystone.cpp init 490:ioc finalize success ret val: 0
+[   94.112952] [/keystone/build/linux-keystone-driver.build/keystone-ioctl.c]:keystone_finalize_enclave:133, epm c7c00000
+[   97.854400] epm_id:5 epm_init 1111111
+[   97.854400] 
+[   97.855228] device addr ffffffe00001e000
+[   97.855228] 
+[   97.855437] epm_init 22222222
+[   97.855437] 
+[   97.855679] epm_init 33333
+[   97.855679] 
+[   97.855861] 
+[   97.855861] 	 [DBG] dma alloc trace:
+[   97.855861] 
+[   97.856705] 
+[   97.856705] 
+[   97.856705] 
+[   97.856705] dma alloc attrs trace
+[   97.856705] 
+[   97.856705] 
+[   97.857109] 
+[   97.857109] 
+[   97.857109] trace dma_alloc_from_dev_coherent
+[   97.857109] 
+[   97.857438] dev mem: 0, dma handle: 0
+[   97.857438] 
+[   97.857649] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc:256
+[   97.857649]   dma: 0, dev: ffffffe039139800
+[   97.858055] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc_pages:170
+[   97.858055]   dma: 0, dev: ffffffe0391395d0
+[   97.858529] [ find dma ]/keystone/linux/kernel/dma/direct.c:__dma_direct_alloc_pages:116
+[   97.858529]   dma: 0, node: -1
+[   97.878221] [ find dma ]/keystone/linux/kernel/dma/direct.c:__dma_direct_alloc_pages:127
+[   97.878221]   dma: 0, page: cb000000, size:3300000
+
+	[enclave_tmp_pmp_unlock] eid:5
+
+TOR,00000000cb000000+0000000003300000 pri[3]
+def bit map: 0000ffff reg bit map: 00006006
+epm_id 5, high_pmp_rid 15 unlocked
+[   97.879518] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc_pages:176
+[   97.879518]   dma: 0, page: 0
+[   98.183992] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc_pages:212
+[   98.183992]   dma: cb000000, page: cb000000
+[   98.186074] dma_alloc_attrs:287 ,dma addr cb000000, ffffffe04ae00000
+[   98.186414] dma_alloc_attrs:295 ,dma addr cb000000, ffffffe04ae00000
+[   98.186735] trace into debug_dma_alloc_coherent empty func
+[   98.186735] 
+[   98.186735] 
+[   98.186735] dma handle:cb000000
+[   98.186735] 
+[   98.187438] [/keystone/build/linux-keystone-driver.build/keystone-page.c] epm_init:75 ## Dma Mem Alloc ## :device:cb000000, epm_vaddr: ffffffe04ae00000 paddr:cb000000 minpages: 13056
+
+	 in lock, high:15
+
+free tmp reg bit map: 00006006
+[   98.221370] 44444444 epm_init finished!!
+[   98.221370] 
+[   98.221651] /keystone/build/linux-keystone-driver.build/keystone-enclave.c create_enclave:89 epm init succeed,
+[   98.221651]  epm paddr cb000000 eid:956963200
+[   98.248349] in finalize
+Runtime = 00000000cb080000, user = 00000000cb2a1000, free = 00000000cb304000
+
+TOR,00000000cb000000+0000000003300000 pri[0]
+def bit map: 0001ffff epm region {16}
+
+NAPOT,00000000b5e00000+0000000000200000 pri[0]
+def bit map: 0003ffff reg bit map: 00006006
+utm region {17}
+src/keystone.cpp init 490:ioc finalize success ret val: 0
+[   98.248624] [/keystone/build/linux-keystone-driver.build/keystone-ioctl.c]:keystone_finalize_enclave:133, epm cb000000
+[  101.917309] epm_id:6 epm_init 1111111
+[  101.917309] 
+[  101.917941] device addr ffffffe00001e000
+[  101.917941] 
+[  101.918154] epm_init 22222222
+[  101.918154] 
+[  101.918354] epm_init 33333
+[  101.918354] 
+[  101.918567] 
+[  101.918567] 	 [DBG] dma alloc trace:
+[  101.918567] 
+[  101.918825] 
+[  101.918825] 
+[  101.918825] 
+[  101.918825] dma alloc attrs trace
+[  101.918825] 
+[  101.918825] 
+[  101.919259] 
+[  101.919259] 
+[  101.919259] trace dma_alloc_from_dev_coherent
+[  101.919259] 
+[  101.919597] dev mem: 0, dma handle: 0
+[  101.919597] 
+[  101.920058] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc:256
+[  101.920058]   dma: 0, dev: ffffffe039139800
+[  101.920492] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc_pages:170
+[  101.920492]   dma: 0, dev: ffffffe0391395d0
+[  101.920901] [ find dma ]/keystone/linux/kernel/dma/direct.c:__dma_direct_alloc_pages:116
+[  101.920901]   dma: 0, node: -1
+[  101.930088] [ find dma ]/keystone/linux/kernel/dma/direct.c:__dma_direct_alloc_pages:127
+[  101.930088]   dma: 0, page: ce400000, size:3300000
+
+	[enclave_tmp_pmp_unlock] eid:6
+
+TOR,00000000ce400000+0000000003300000 pri[3]
+def bit map: 0007ffff reg bit map: 00006006
+epm_id 6, high_pmp_rid 18 unlocked
+[  101.931035] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc_pages:176
+[  101.931035]   dma: 0, page: 0
+[  101.984632] [ find dma ]/keystone/linux/kernel/dma/direct.c:dma_direct_alloc_pages:212
+[  101.984632]   dma: ce400000, page: ce400000
+[  101.985178] dma_alloc_attrs:287 ,dma addr ce400000, ffffffe04e200000
+[  101.985449] dma_alloc_attrs:295 ,dma addr ce400000, ffffffe04e200000
+[  101.985657] trace into debug_dma_alloc_coherent empty func
+[  101.985657] 
+[  101.985657] 
+[  101.985657] dma handle:ce400000
+[  101.985657] 
+[  101.986069] [/keystone/build/linux-keystone-driver.build/keystone-page.c] epm_init:75 ## Dma Mem Alloc ## :device:ce400000, epm_vaddr: ffffffe04e200000 paddr:ce400000 minpages: 13056
+
+	 in lock, high:18
+
+free tmp reg bit map: 00006006
+[  101.996133] 44444444 epm_init finished!!
+[  101.996133] 
+[  101.996361] /keystone/build/linux-keystone-driver.build/keystone-enclave.c create_enclave:89 epm init succeed,
+[  101.996361]  epm paddr ce400000 eid:956963328
+[  102.006523] in finalize
+Runtime = 00000000ce480000, user = 00000000ce6a1000, free = 00000000ce704000
+
+TOR,00000000ce400000+0000000003300000 pri[0]
+def bit map: 000fffff epm region {19}
+
+NAPOT,00000000b5800000+0000000000200000 pri[0]
+def bit map: 001fffff reg bit map: 00006006
+utm region {20}
+src/keystone.cpp init 490:ioc finalize success ret val: 0
+[  102.006701] [/keystone/build/linux-keystone-driver.build/keystone-ioctl.c]:keystone_finalize_enclave:133, epm ce400000
+
+to encl performance :[e1: 1, 2846563]Enclave ID = 
+to host performance :[e1: 1, 1174529 ][ZZP-SDK]Slave running...
+
+[  105.461199] ``` ioctl RUN ``` go to sbicall:be000000 root pt:ffffffe03de00000
+
+to encl performance :[e2: 1, 112823]Enclave ID = 2
+EAPP entry = 101c0 DRAM = c1400000, 3
+to host performance :[e2: 1, 163280 ]
+to encl performance :[e1: 2, 3386998]1
+EAPP entry = 101c0 DRAM = be000000, 3300000, UTM = 1555fb3000, 200000
+
+to host performance :[e1: 2, 1326634 ]
+to encl performance :[e2: 2, 205211]300000, UTM = 15564b3000, 200000
+copy root page table done!
+
+to host performance :[e2: 2, 311547 ]
+to encl performance :[e1: 3, 3481364]copy root page table done!
+
+to host performance :[e1: 3, 1800097 ]
+to encl performance :[e2: 3, 308876]init_freemem done!
+set_program_break done!
+init_user_stack_and_env done!
+
+to host performance :[e2: 3, 467052 ]
+to encl performance :[e1: 4, 3587249]init_freemem done!
+set_program_break done!
+init_
+to host performance :[e1: 4, 1955382 ]
+to encl performance :[e1: 5, 3691047]user_stack_and_env done!
+Drop to user land
+
+to host performance :[e1: 5, 2114148 ]
+to encl performance :[e1: 6, 3800518]
+to host performance :[e1: 6, 2269550 ]
+to encl performance :[e2: 4, 411802]Drop to user land
+
+to host performance :[e2: 4, 619714 ]
+to encl performance :[e2: 5, 515023]
+to host performance :[e2: 5, 773908 ]
+to encl performance :[e1: 7, 3908194]
+to host performance :[e1: 7, 2432547 ]
+---------------
+****Hello 1****
+---------------
+
+
+[prototype-e1.c]:main:60
+
+
+to encl performance :[e2: 6, 626494]
+to host performance :[e2: 6, 916860 ]
+	---------------
+	****Hello 2****
+	---------------
+
+
+[prototype-e2.c]:main:106
+
+
+to encl performance :[e2: 7, 732651]
+to host performance :[e2: 7, 1058606 ]Server about to exit!
+
+to encl performance :[e2: 8, 837909]
+to host performance :[e2: 8, 1204945 ][ZZP-SDK]Slave exited.
+
+
+to encl performance :[e1: 8, 4012161]
+to host performance :[e1: 8, 2573508 ]Client about to exit!
+
+to encl performance :[e1: 9, 4116364]
+to host performance :[e1: 9, 2716627 ][ZZP-SDK]Client running...
+
+[ZZP-SDK]: 3 should begin..:
+: Success
+[  105.466161] ``` ioctl RUN ``` go to sbicall:c1400000 root pt:ffffffe041200000
+
+to encl performance :[e3: 1, 160158]Enclave ID = 3
+to host performance :[e3: 1, 158349 ]
+to encl performance :[e3: 2, 265352]
+EAPP entry = 101c0 DRAM = c4800000, 3300000, UTM = 15569b3000, 200000
+copy root page table done!
+
+to host performance :[e3: 2, 314549 ]
+to encl performance :[e3: 3, 371422]
+to host performance :[e3: 3, 468233 ]
+to encl performance :[e3: 4, 474300]init_freemem done!
+set_program_break done!
+init_user_stack_and_env done!
+Drop to user land
+
+to host performance :[e3: 4, 624700 ]
+to encl performance :[e3: 5, 578487]
+to host performance :[e3: 5, 768918 ]
+		---------------
+		****Hello 3****
+		---------------
+
+
+[prototype-e3.c]:main:10
+
+
+to encl performance :[e3: 6, 684614]
+to host performance :[e3: 6, 972676 ]Client about to exit!
+
+to encl performance :[e3: 7, 788896]
+to host performance :[e3: 7, 1116107 ][ZZP-SDK]: encl 4 init..:
+: Success
+[ZZP-SDK]: encl 4 should begin..:
+: Success
+[  105.514411] ``` ioctl RUN ``` go to sbicall:c4800000 root pt:ffffffe044600000
+
+to encl performance :[e4: 1, 158280]Enclave ID = 4
+EAPP entry = 101c0 DRAM = c7c00000, 3300000, UTM = 1556eb3000, 200000
+
+to host performance :[e4: 1, 170029 ]
+to encl performance :[e4: 2, 263784]copy root page table done!
+
+to host performance :[e4: 2, 323540 ]
+to encl performance :[e4: 3, 367878]init_freemem done!
+set_program_break done!
+init_user_stack_and_env done!
+
+to host performance :[e4: 3, 444881 ]
+to encl performance :[e4: 4, 470703]Drop to user land
+
+to host performance :[e4: 4, 598385 ]
+to encl performance :[e4: 5, 578869]
+to host performance :[e4: 5, 751061 ]
+to encl performance :[e4: 6, 686235]
+to host performance :[e4: 6, 893448 ]
+			---------------
+			****Hello 4****
+			---------------
+
+
+[prototype-e4.c]:main:10
+
+
+to encl performance :[e4: 7, 791962]
+to host performance :[e4: 7, 1031322 ]Client about to exit!
+
+to encl performance :[e4: 8, 895366]
+to host performance :[e4: 8, 1174519 ][ZZP-SDK]: encl 5 should begin..:
+: Success
+[  105.537180] ``` ioctl RUN ``` go to sbicall:c7c00000 root pt:ffffffe047a00000
+
+to encl performance :[e5: 1, 149334]Enclave ID = 5
+EAPP entry = 101c0 DRAM = cb000000, 3300000, 
+to host performance :[e5: 1, 155082 ]
+to encl performance :[e5: 2, 289176]UTM = 15573b3000, 200000
+
+to host performance :[e5: 2, 312511 ]
+to encl performance :[e5: 3, 391280]copy root page table done!
+
+to host performance :[e5: 3, 463333 ]
+to encl performance :[e5: 4, 493907]init_freemem done!
+set_program_break done!
+init_user_stack_and_env done!
+Drop to user land
+
+to host performance :[e5: 4, 611471 ]
+to encl performance :[e5: 5, 597021]
+to host performance :[e5: 5, 752817 ]
+				---------------
+				****Hello 5****
+				---------------
+
+
+[prototype-e5.c]:main:10
+
+
+to encl performance :[e5: 6, 701672]
+to host performance :[e5: 6, 891745 ]Client about to exit!
+
+to encl performance :[e5: 7, 805361]
+to host performance :[e5: 7, 1039343 ]
+to encl performance :[e5: 8, 906947]
+to host performance :[e5: 8, 1176787 ][ZZP-SDK]: encl 6 should begin..:
+: Success
+[  105.558561] ``` ioctl RUN ``` go to sbicall:cb000000 root pt:ffffffe04ae00000
+
+to encl performance :[e6: 1, 171027]Enclave ID = 6
+EAPP entry = 101c0 DRAM = ce400000, 3300000, UTM = 15578b3000, 200000
+
+to host performance :[e6: 1, 164346 ]
+to encl performance :[e6: 2, 283662]copy root page table done!
+
+to host performance :[e6: 2, 322701 ]
+to encl performance :[e6: 3, 387631]init_freemem done!
+set_program_break done!
+
+to host performance :[e6: 3, 470805 ]
+to encl performance :[e6: 4, 490993]init_user_stack_and_env done!
+Drop to user land
+
+to host performance :[e6: 4, 594876 ]
+to encl performance :[e6: 5, 600401]
+to host performance :[e6: 5, 752082 ]
+to encl performance :[e6: 6, 708769]
+to host performance :[e6: 6, 893138 ]
+					---------------
+					****Hello 6****
+					---------------
+
+
+[prototype-e6.c]:main:10
+
+
+to encl performance :[e6: 7, 815449]
+to host performance :[e6: 7, 1033361 ]Client about to exit!
+
+to encl performance :[e6: 8, 919452]
+to host performance :[e6: 8, 1173884 ]
+
+
+
+[ PERFORMANCE EVLUATION!!! ]
+
+
+592425918216914, 592447840392271, 592458255916590, 592469353917593
+ 10415524319
+free reg bit map: 00006006
+free reg bit map: 00006006
+free reg bit map: 00006006
+free reg bit map: 00006006
+free reg bit map: 00006006
+free reg bit map: 00006006
+free reg bit map: 00006006
+free reg bit map: 00006006
+free reg bit map: 00006006
+free reg bit map: 00006006
+free reg bit map: 00006006
+free reg bit map: 00006006
+# QEMU: Terminated
+

@@ -47,7 +47,7 @@ void boot_other_hart(uintptr_t unused __attribute__((unused)))
 #endif
     }
   }
-
+  printm("[ZZP_bbl] entrypoint is %lx \n", entry, entry_point);
   enter_supervisor_mode(entry, hartid, dtb_output());
 }
 
