@@ -109,3 +109,8 @@ See [docs](http://docs.keystone-enclave.org) for getting started.
 # Contributing
 
 See CONTRIBUTING.md
+
+
+---
+> 要把buildroot换成keystone的，不然下载失败。
+> 手动下载老版本预编译的工具链并解压，新工具链不支持。
